@@ -1,0 +1,125 @@
+#login {
+    width: 300px;
+    margin: 30px auto;
+}
+.icon-blue {
+    background-image: url('../../img/backend/glyphicons-halflings-blue.png');
+}
+.hide {
+    display: none;
+}
+.pointer {
+    cursor: pointer;
+}
+.actions a {
+    margin: 0 5px;
+}
+#secondary_bar .logout {
+    float: right;
+}
+form .input.datepicker {
+    width: 265px;
+    float: left;
+    clear: none;
+}
+form .input.datepicker input[type=text] {
+    width: 206px;
+}
+.simple-layout .flash-message {
+    display: block;
+    max-width: 400px;
+    margin: 20px auto 0 auto;
+}
+#reservations .total {
+    font-size: 15px;
+    font-weight: bold;
+}
+.popover {
+    width: 225px;
+}
+article header .btn-add {
+    margin: -11px 0 -7px 11px;
+}
+/*helper tooltips*/
+span.help-icon {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    background: url('../../img/backend/help-icon.png') no-repeat center;
+    position: relative;
+    cursor: help;
+    margin-bottom: -2px;
+}
+*[rel~=helper] {
+    display: none;
+}
+.helper-tooltip {
+    display: none;
+    cursor: default;
+    background: #666;    color: #fff;
+    width: 180px;
+    padding: 11px;
+    position: absolute;
+    top: -13px;
+    left: 33px;
+    z-index: 100;
+    font-size: 13px;
+    font-weight: normal;
+    text-shadow: none;
+    text-transform: none;
+}
+.helper-tooltip .left-arrow {
+    position: absolute;
+    width: 11px;
+    height: 19px;
+    background: url('../../img/backend/left-gray-arrow.png') no-repeat;
+    top: 10px;
+    left: -9px;
+}
+.loader.medium {
+    background: url('../../img/backend/loader/medium.gif') no-repeat center;
+    height: 50px;
+}
+table.edit-list {
+    vertical-align: top
+}
+form .input span {
+    font-weight: bold;
+}
+.modal {
+    float: left;
+    width: 100%;
+    padding: 10px 0;
+}
+.modal header {
+    margin: 10px 0 5px;
+    font-weight: bold;
+    font-size: 13px;
+    border-bottom: 1px solid #eee;
+}
+.helptext {
+    color: #999;
+}
+span.to-list-elem {
+    padding-right: 4px;
+    font-weight: bold;
+}
+.overlay-loader {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.6);
+    left: 0;
+    top: 0;
+    text-align: center;
+}
+.overlay-loader .img {
+    width: 70px;
+    height: 70px;
+    background: url('../../img/backend/loader/large.gif') no-repeat center;
+    margin: 100px auto;
+    display: inline-block;
+}
+#main {
+    /*position: relative;*/
+}
