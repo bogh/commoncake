@@ -1,4 +1,4 @@
-commoncake
-==========
+Common Cake Plugin
+==================
 
-CakePHP helper plugin
+
