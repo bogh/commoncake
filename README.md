@@ -1,0 +1,4 @@
+commoncake
+==========
+
+CakePHP helper plugin
