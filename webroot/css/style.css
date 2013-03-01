@@ -110,6 +110,7 @@ span.to-list-elem {
     left: 0;
     top: 0;
     text-align: center;
+    cursor: progress;
 }
 .overlay-loader .img {
     width: 70px;
