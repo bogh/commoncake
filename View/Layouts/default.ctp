@@ -13,7 +13,7 @@
     </div>
 </section>
 
-<?php echo $this->element('backend/sidebar'); ?>
+<?php echo $this->element('Common.sidebar'); ?>
 
 <section id="main" class="column">
     <?php

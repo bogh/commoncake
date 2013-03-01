@@ -16,8 +16,7 @@ class CommonHelper extends AppHelper {
         'Time',
         'Js',
         'Paginator',
-        'Form',
-        'Upload.Upload'
+        'Form'
     );
 
     public function afterRender($viewFile) {
@@ -25,10 +24,6 @@ class CommonHelper extends AppHelper {
             $layout = $this->_View->layout;
             $this->_View->layout = "Common.{$layout}";
         }
-    }
-
-    public function beforeLayout($layoutFile) {
-        $this->Js->setVariable = 'ni';
     }
 
     /**
@@ -145,12 +140,6 @@ class CommonHelper extends AppHelper {
         }
 
         return $this->Paginator->sort($key, $title, array('escape' => false));
-    }
-
-    public function uploadLinks($id) {
-        return $this->Html->div('image-links', implode(array(
-            $this->Upload->link('view', $id)
-        )));
     }
 
     public function isEdit($model, $primaryKey = 'id') {

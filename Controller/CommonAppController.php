@@ -133,28 +133,28 @@ class CommonAppController extends AppController {
     }
 
     protected function _info($message) {
-        $this->Session->setFlash($message, 'backend/flash', array(
+        $this->Session->setFlash($message, 'Common.flash', array(
             'class' => 'alert_warning'
         ));
     }
 
     protected function _error($message = 'Please review your form.') {
-        $this->Session->setFlash($message, 'backend/flash', array(
+        $this->Session->setFlash($message, 'Common.flash', array(
             'class' => 'alert_error'
         ));
     }
 
     protected function _success($message) {
-        $this->Session->setFlash($message, 'backend/flash', array(
+        $this->Session->setFlash($message, 'Common.flash', array(
             'class' => 'alert_success'
         ));
     }
 
-    protected function _login() {
+    protected function _login($redirect = array('action' => 'index')) {
         if (!empty($this->request->data)) {
             if ($this->Auth->login()) {
                 // redirect
-                $this->redirect(array('action' => 'dashboard'));
+                $this->redirect($redirect);
             } else {
                 $this->_error('Your login information is incorrect.');
             }

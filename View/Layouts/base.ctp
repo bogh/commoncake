@@ -9,18 +9,18 @@
     echo $this->Html->meta('icon');
 
     echo $this->Html->css(array(
-      '/admin/css/bootstrap.min',
-      '/admin/css/layout',
-      '/admin/css/style',
-      '/admin/css/datepicker',
+      '/common/css/bootstrap.min',
+      '/common/css/layout',
+      '/common/css/style',
+      '/common/css/datepicker',
     ));
 
     echo $this->Html->script(array(
-      '/admin/js/jquery.min',
-      '/admin/js/lodash',
-      '/admin/js/bootstrap.min',
-      '/admin/js/bootstrap-datepicker',
-      '/admin/js/common',
+      '/common/js/jquery.min',
+      '/common/js/lodash',
+      '/common/js/bootstrap.min',
+      '/common/js/bootstrap-datepicker',
+      '/common/js/common',
     ));
 
     echo $this->fetch('script');

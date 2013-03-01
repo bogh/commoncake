@@ -50,6 +50,7 @@ jQuery(function ($) {
                 }
             });
         }
+
         updateContent();
         if (o.autoRefresh) {
             setInterval(updateContent, o.autoRefresh);
@@ -125,10 +126,14 @@ jQuery(function ($) {
         init: function () {
             var self = this;
 
-            $(document).on('click', 'a:not([rel=modal], [rel=direct])', function (e) {
-                e.preventDefault();
-                self.load($(this).attr('href'));
-            });
+            $(document).on(
+                'click',
+                'a:not([rel=modal], [rel=direct], [data-confirm])',
+                function (e) {
+                    e.preventDefault();
+                    self.load($(this).attr('href'));
+                }
+            );
         },
 
         load: function (url, push) {
@@ -251,15 +256,17 @@ jQuery(function ($) {
     });
 
     // coaie nu comenta ca nu am facut eu codu asta :D e luat de la un fraier, easy shit
-    $('a[data-confirm]').click(function (e) {
+    $(document).on('click', 'a[data-confirm]', function (e) {
         var href = $(this).attr('href');
         e.preventDefault();
         if (!$('#dataConfirmModal').length) {
             $('body').append('<div id="dataConfirmModal" class="modal fade fast" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div>');
         }
 
-        $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+        $('#dataConfirmModal').find('.modal-body')
+            .text($(this).attr('data-confirm'));
         $('#dataConfirmOK').attr('href', href);
+
         $('#dataConfirmModal').modal({show:true});
 
         return false;
