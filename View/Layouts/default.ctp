@@ -8,7 +8,7 @@
 
             echo $this->Html->link('<i class="icon-off"></i> Logout', [
                 'controller' => 'users', 'action' => 'logout'
-            ], ['class' => 'logout', 'escape' => false, 'rel' => 'direct']);
+            ], ['class' => 'logout', 'escape' => false]);
         ?>
     </div>
 </section>

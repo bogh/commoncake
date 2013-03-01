@@ -84,7 +84,7 @@ class CommonHelper extends AppHelper {
             $id
         );
         $image = '<i class="icon-edit"></i> Edit';
-        return $this->Html->link($image, $url, array('escape' => false));
+        return $this->link($image, $url, array('escape' => false));
     }
 
     /**
@@ -99,7 +99,7 @@ class CommonHelper extends AppHelper {
             $id
         );
         $image .= ' Details';
-        return $this->Html->link($image, $url, array('escape' => false));
+        return $this->link($image, $url, array('escape' => false));
     }
 
     /**
@@ -115,7 +115,7 @@ class CommonHelper extends AppHelper {
         );
         $confirm = 'Are you sure you want to delete the selected record ?';
         $image = '<i class="icon-remove"></i> Delete';
-        return $this->Html->link($image, $url, array(
+        return $this->link($image, $url, array(
             'escape' => false
         ), $confirm);
     }
@@ -135,7 +135,10 @@ class CommonHelper extends AppHelper {
             $title .= $this->Paginator->link(
                 '<i class="icon-ban-circle"></i>',
                 array('order' => false),
-                array('escape' => false)
+                array(
+                    'escape' => false,
+                    'rel' => 'content'
+                )
             );
         }
 
@@ -180,7 +183,7 @@ class CommonHelper extends AppHelper {
                 ));
             }
 
-            $out[] = $this->Html->link(
+            $out[] = $this->link(
                 $link,
                 $options['link'],
                 Hash::merge($defaults, $linkOptions)
@@ -221,7 +224,7 @@ class CommonHelper extends AppHelper {
                     $linkOptions['class'] = 'active';
                 }
 
-                $list[] = $this->Html->link($title, $options['link'], $linkOptions);
+                $list[] = $this->link($title, $options['link'], $linkOptions);
             }
             $out[] = $this->Html->nestedList($list);
         }
@@ -272,7 +275,7 @@ class CommonHelper extends AppHelper {
             return $button;
         }
 
-        return $this->Html->link(
+        return $this->link(
             $button,
             $link,
             array('escape' => false) + $attrs
@@ -329,6 +332,16 @@ class CommonHelper extends AppHelper {
             return $this->Html->tag('span', $alt, array('class' => 'helptext'));
         }
         return '';
+    }
+
+    /**
+     * Create a link that is executed through ajax and loaded in content
+     */
+    public function link($title, $url = null, $options = array(), $confirmMessage = false) {
+        if (!isset($options['rel'])) {
+            $options['rel'] = 'content';
+        }
+        return $this->Html->link($title, $url, $options, $confirmMessage);
     }
 
 }
