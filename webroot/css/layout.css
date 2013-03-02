@@ -196,7 +196,7 @@ aside#sidebar {
 float: left;
 margin-top: -4px;
 min-height: 500px;
-width: 15%;
+width: 13%;
 background: #E0E0E3 url(../img/sidebar.png) repeat;
 }
 
@@ -367,7 +367,7 @@ section#main {
 float: left;
 margin-top: -2px;
 min-height: 500px;
-width: 85%;
+width: 87%;
 /* background: url(../img/sidebar_shadow.png) repeat-y left top; */
 }
 

@@ -3,6 +3,7 @@
 <head>
   <title>
     <?php echo $this->fetch('title'); ?>
+    - <?php echo Configure::read('Site.title'); ?>
  </title>
 
   <?php

@@ -50,10 +50,7 @@ class CommonAppController extends AppController {
     }
 
     protected function _backend() {
-        $prefixes = array();
-        if (property_exists($this, '_backendPrefixes')) {
-            $prefixes = $this->_backendPrefixes;
-        }
+        $prefixes = Configure::read('Common.backend_prefixes', array());
         $detector = function ($request) use ($prefixes) {
             if (empty($prefixes)) {
                 return !empty($request->prefix);

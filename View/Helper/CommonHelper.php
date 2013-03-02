@@ -219,6 +219,9 @@ class CommonHelper extends AppHelper {
                     $class = "icon icon-{$options['icon']}";
                     $title = "<i class=\"{$class}\"></i> " . $title;
                 }
+                if (isset($options['options'])) {
+                    $linkOptions = Hash::merge($linkOptions, $options['options']);
+                }
 
                 if ($this->isActive($options['link'])) {
                     $linkOptions['class'] = 'active';
@@ -233,25 +236,7 @@ class CommonHelper extends AppHelper {
     }
 
     public function isActive($link) {
-        $params = $this->request->params;
-        $is = true;
-
-        foreach ($link as $k => $v) {
-            if ($k == 'action' && isset($params['prefix'])) {
-                $v = "{$params['prefix']}_{$v}";
-            }
-            if (!in_array($k, $params)) {
-                $is = false;
-            } elseif ($params[$k] != $v) {
-                $is = false;
-            }
-
-            if (!$is) {
-                break;
-            }
-        }
-
-        return $is;
+        return $this->url($link) === $this->request->here;
     }
 
     public function addLink($title = 'Add', $attrs = array(), $link = true) {

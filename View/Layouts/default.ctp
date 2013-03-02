@@ -4,7 +4,7 @@
     <div class="user">
         <i class="icon-user"></i>
         <?php
-            echo AuthComponent::user('full_name');
+            echo AuthComponent::user(ClassRegistry::init('User')->displayField);
 
             echo $this->Html->link('<i class="icon-off"></i> Logout', [
                 'controller' => 'users', 'action' => 'logout'

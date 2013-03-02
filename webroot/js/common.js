@@ -165,6 +165,7 @@ jQuery(function ($) {
                 .addClass('alert_error')
                 .html('There was an error proccessing the request.')
                 .prependTo($('#main'));
+            this.loader.hide();
         },
 
         success: function (res, req, options) {
