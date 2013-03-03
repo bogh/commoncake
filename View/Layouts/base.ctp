@@ -16,6 +16,8 @@
       '/common/css/datepicker',
     ));
 
+    echo $this->fetch('css');
+
     echo $this->Html->script(array(
       '/common/js/jquery.min',
       '/common/js/lodash',
@@ -25,6 +27,10 @@
     ));
 
     echo $this->fetch('script');
+
+    if (isset($assets)) {
+      echo $assets;
+    }
 
     echo $this->Js->writeBuffer(array('onDomReady' => false));
   ?>

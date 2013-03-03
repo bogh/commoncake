@@ -4,10 +4,6 @@ App::uses('AppController', 'Controller');
 
 class CommonAppController extends AppController {
 
-    public $components = array('Common.Common');
-
-    public $helpers = array('Common.Common');
-
     public function beforeFilter() {
         parent::beforeFilter();
 

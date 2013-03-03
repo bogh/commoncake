@@ -24,6 +24,17 @@ class CommonHelper extends AppHelper {
             $layout = $this->_View->layout;
             $this->_View->layout = "Common.{$layout}";
         }
+
+        // Load extra assets
+        $assets = '';
+        if (isset($this->settings['css'])) {
+            $assets .= $this->Html->css((array) $this->settings['css']);
+        }
+        if (isset($this->settings['script'])) {
+            $assets .= $this->Html->script((array) $this->settings['script']);
+        }
+
+        $this->_View->set(compact('assets'));
     }
 
     /**
