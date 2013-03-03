@@ -5,14 +5,16 @@ html, div, map, dt, isindex, form, header, aside, section, section, article, foo
 }
 
 html, body {
-margin: 0;
-padding: 0;
-height: 100%;
-background: #F8F8F8;
-font-size: 12px;
-font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #F8F8F8;
+    font-size: 12px;
+    font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
 }
-
+body {
+    margin: 30px 0 0 0;
+}
 .clear {
 clear: both;
 }
@@ -34,36 +36,53 @@ text-decoration: underline;
 /* Header */
 
 header#header {
-width: 100%;
-height: 55px;
-background: #222222 url(../img/header_bg.png) repeat-x;
+    width: 100%;
+    height: 30px;
+    background: #222222 url(../img/header_bg.png) repeat-x;
+    position: fixed;
+    top: 0;
+    z-index: 20;
+    left: 0;
+    -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
+    -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
 }
 
 header#header h1.site_title, header#header h2.section_title {
-display: block;
-float: left;
-margin: 0;
-width: 15%;
-height: 55px;
-color: #fff;
-text-align: left;
-text-indent: 1.8%;
-text-shadow: 0 -1px 0 #000;
-font-weight: normal;
-font-size: 22px;
-line-height: 55px;
+    display: block;
+    float: left;
+    margin: 0;
+    width: 13%;
+    height: 30px;
+    color: #fff;
+    text-align: left;
+    text-indent: 1.8%;
+    text-shadow: 0 -1px 0 #000;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 30px;
+    font-weight: bold;
+}
+header#header h1.site_title .tooltip {
+    line-height: 13px;
+    font-size: 12px;
+    font-weight: normal;
 }
 
 header#header h1.site_title a {
-color: #fff;
-text-decoration: none;
+    color: #fff;
+    text-decoration: none;
+}
+header#header h1.site_title a:hover {
+    color: #08c;
 }
 
 header#header h2.section_title {
-width: 66%;
-background: url(../img/header_shadow.png) no-repeat left top;
-text-align: center;
-text-indent: 4.5%;
+    width: 66%;
+    background: url(../img/header_shadow.png) no-repeat left top;
+    text-align: center;
+    text-indent: 4.5%;
+    cursor: pointer;
 }
 
 .btn_view_site {
@@ -72,16 +91,17 @@ width: 9%;
 }
 
 .btn_view_site a {
-display: block;
-margin-top: 12px;
-width: 91px;
-height: 27px;
-background: url(../img/btn_view_site.png) no-repeat;
-color: #fff;
-text-align: center;
-text-decoration: none;
-text-shadow: 0 -1px 0 #000;
-line-height: 29px;}
+    display: block;
+    margin-top: 2px;
+    width: 91px;
+    height: 27px;
+    background: url(../img/btn_view_site.png) no-repeat;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 #000;
+    line-height: 26px;
+}
 
 .btn_view_site a:hover {
 background-position: 0 -27px;
@@ -193,11 +213,11 @@ background: url(../img/breadcrumb_divider.png) no-repeat;
 /* Sidebar */
 
 aside#sidebar {
-float: left;
-margin-top: -4px;
-min-height: 500px;
-width: 13%;
-background: #E0E0E3 url(../img/sidebar.png) repeat;
+    float: left;
+    min-height: 500px;
+    width: 13%;
+    background: #E0E0E3 url(../img/sidebar.png) repeat;
+    box-shadow: -1px 0 0 #ccc inset;
 }
 
 #sidebar hr {
@@ -244,16 +264,15 @@ color: #666666;
 /* Sidebar Menu */
 
 #sidebar h3 {
-display: block;
-float: left;
-margin-left: 6%;
-/*margin: 10px 0 10px 6%;*/
-width: 90%;
-color: #1F1F20;
-text-transform: uppercase;
-text-shadow: 0 1px 0 #fff;
-font-size: 13px;
-line-height: 20px;
+    display: block;
+    float: left;
+    margin: 15px 0 0px 6%;
+    width: 90%;
+    color: #1F1F20;
+    text-transform: uppercase;
+    text-shadow: 0 1px 0 #fff;
+    font-size: 13px;
+    line-height: 20px;
 }
 
 .toggleLink {
@@ -383,14 +402,14 @@ width: 87%;
 /* Modules */
 
 .module {
-margin: 20px 3% 0 3%;
-margin-top: 20px;
-width: 100%;
-border: 1px solid #9BA0AF;
--webkit-border-radius: 5px;
--moz-border-radius: 5px;
-border-radius: 5px;
-background: #ffffff;
+    margin: 20px 3% 0 2%;
+    margin-top: 20px;
+    width: 100%;
+    border: 1px solid #9BA0AF;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background: #ffffff;
 }
 
 #main .module header h3 {

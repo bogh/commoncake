@@ -1,6 +1,21 @@
 jQuery(function ($) {
     //On Click Event
 
+    $(document).on('click', '[rel~=scroll-to-top]', function () {
+        $('body').animate({
+            scrollTop: 0
+        }, 100);
+    });
+
+    $(document).on('scroll', function () {
+        var top = $(this).scrollTop();
+        if (top) {
+            $("#header #can-scroll").fadeIn(100);
+        } else {
+            $("#header #can-scroll").fadeOut(100);
+        }
+    })
+
     $(document).on('click', 'ul.tabs li', function (e) {
         $('ul.tabs li').removeClass('active');
         $(this).addClass('active');
@@ -157,6 +172,9 @@ jQuery(function ($) {
             // show loader
             jqXHR.setRequestHeader('X-LAYOUT', 'content');
             this.loader.show();
+            $('body').animate({
+                scrollTop: 0
+            }, 100);
         },
 
         error: function (e, jqXHR, options, err) {

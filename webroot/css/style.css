@@ -1,3 +1,6 @@
+a.js {
+    cursor: pointer;
+}
 #login {
     width: 300px;
     margin: 30px auto;
@@ -120,5 +123,10 @@ span.to-list-elem {
     display: inline-block;
 }
 #main {
-    /*position: relative;*/
+    position: relative;
+}
+#sidebar .current-user {
+    padding: 5px 10px;
+    border-bottom: 1px solid #eee;
+    box-shadow: 0 -1px 0 #ccc inset;
 }
