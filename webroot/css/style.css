@@ -20,6 +20,9 @@ a.js {
 #secondary_bar .logout {
     float: right;
 }
+form {
+    margin: 0;
+}
 form .input.datepicker {
     width: 265px;
     float: left;
@@ -90,7 +93,7 @@ form .input span {
     font-weight: bold;
 }
 .modal {
-    padding: 10px 0;
+    /*padding: 10px 0;*/
 }
 .modal header {
     margin: 10px 0 5px;

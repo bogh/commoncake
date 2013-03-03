@@ -62,6 +62,7 @@ header#header h1.site_title, header#header h2.section_title {
     font-size: 14px;
     line-height: 30px;
     font-weight: bold;
+    overflow: hidden;
 }
 header#header h1.site_title .tooltip {
     line-height: 13px;
@@ -295,23 +296,35 @@ margin: 0; padding: 0;
 }
 
 #sidebar li {
-margin: 0 0 0 12%; padding: 0;
-list-style: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 #sidebar li a {
-display: inline-block;
-margin: 2px 0;
-/*padding-left: 25px;*/
-height: 17px;
-color: #666666;
-text-decoration: none;
-text-shadow: 0 1px 0 #fff;
-line-height: 17px;
+    display: inline-block;
+    margin: 2px 0;
+    /*padding-left: 25px;*/
+    height: 17px;
+    color: #666666;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #fff;
+    line-height: 17px;
+    -webkit-transition: 0.3s all;
+    -moz-transition: 0.3s all;
+    -o-transition: 0.3s all;
+    -ms-transition: 0.3s all;
+    transition: 0.3s all;
+    display: block;
+    padding-left: 12%;
+    margin-right: 1px;
 }
 
 #sidebar li a:hover {
-color: #444444;
+    color: #444;
+    padding-left: 20%;
+    text-decoration: none;
+    background: #f5f5f5;
 }
 
 /* Sidebar Icons */
@@ -410,6 +423,11 @@ width: 87%;
     -moz-border-radius: 5px;
     border-radius: 5px;
     background: #ffffff;
+    -webkit-transition: 0.3s all;
+    -moz-transition: 0.3s all;
+    -o-transition: 0.3s all;
+    -ms-transition: 0.3s all;
+    transition: 0.3s all;
 }
 
 #main .module header h3 {
@@ -533,7 +551,8 @@ font-size: 10px;}
 }
 
 .tablesorter td {
-    padding: 5px 10px;
+    padding: 3px 10px;
+    border-right: 1px dotted #ccc
 }
 
 .tablesorter input[type=image] {
