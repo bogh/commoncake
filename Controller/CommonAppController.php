@@ -90,11 +90,15 @@ class CommonAppController extends AppController {
         $options = Hash::merge($_defaults, $options);
         $modelClass = $this->modelClass;
         $method = $options['method'];
-
         if (!empty($this->request->data)) {
             if ($this->$modelClass->$method($this->request->data)) {
                 $this->_success("{$modelClass} has been saved!");
-                $this->redirect($options['redirect']);
+
+                if (is_array($options['redirect'])) {
+                    $this->redirect($options['redirect']);
+                } elseif ($options['redirect'] == 'refresh') {
+                    $this->set('refresh', true);
+                }
             } else {
                 $this->_error();
             }

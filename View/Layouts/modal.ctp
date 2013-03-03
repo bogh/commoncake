@@ -8,7 +8,7 @@
     ?>
 
     <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      <a class="close" data-dismiss="modal" aria-hidden="true">x</a>
       <h3>
         <?php echo $this->fetch('header'); ?>
       </h3>
@@ -19,7 +19,7 @@
     </div>
 
     <div class="modal-footer">
-      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <a class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
       <?php echo $this->fetch('buttons'); ?>
     </div>
 

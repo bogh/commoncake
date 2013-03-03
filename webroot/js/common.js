@@ -324,37 +324,42 @@ jQuery(function ($) {
         e.preventDefault();
 
         var $this = $(this),
-            options = {
+
+            options = $.extend({
                 holder: 'modal',
                 active: false
-            },
+            }, $this.data()),
+
             ajax = {
                 url: $this.attr('action'),
                 type: $this.attr('method'),
-                data: $this.serializeArray()
+                data: $this.serializeArray(),
+                beforeSend: function () {
+                    $this.data('active', true);
+                },
+                success: function (res) {
+                    var $holder;
+                    switch (options.holder) {
+                        case 'modal':
+                            $holder = $this.find('.modal-body');
+                            break;
+                    }
+
+                    if ($holder) {
+                        $holder.html(res);
+                    }
+                },
+                error: function () {
+                    $this.data('active', false);
+                },
+                complete: function () {
+                    $this.data('active', false);
+                }
             };
 
-        options = $.extend(options, $this.data());
         if (options.active) {
             return; // means form is already in execution
         }
-
-        ajax.success = function (res) {
-            $this.data('active', false);
-
-            var $holder;
-            switch (options.holder) {
-                case 'modal':
-                    $holder = $this.find('.modal-body');
-                    break;
-            }
-
-            if ($holder) {
-                $holder.html(res);
-            }
-        };
-
-        $this.data('active', true);
         $.ajax(ajax);
     });
 });
