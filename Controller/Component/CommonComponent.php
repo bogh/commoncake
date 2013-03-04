@@ -15,6 +15,7 @@ class CommonComponent extends Component {
      */
     protected function _layout() {
         $layout = env('HTTP_X_LAYOUT');
+
         if ($layout) {
             $this->__controller->layout = strtolower($layout);
         }

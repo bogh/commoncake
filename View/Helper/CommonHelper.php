@@ -169,7 +169,7 @@ class CommonHelper extends AppHelper {
         $out = array();
         $defaults = array(
             'escape' => false,
-            'rel' => 'tooltip'
+            'rel' => 'tooltip content'
         );
         foreach ($actions as $title => $options) {
             $linkOptions = array();
@@ -310,7 +310,7 @@ class CommonHelper extends AppHelper {
     public function help($text, $trigger = 'click') {
         $tooltip = $this->Html->div('helper-tooltip', implode(array(
             $text,
-            $this->Html->div('left-arrow', null)
+            $this->Html->div('left-arrow', '')
         )));
 
         return $this->Html->tag('span', $tooltip, array(

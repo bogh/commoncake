@@ -783,7 +783,8 @@ form .checkbox input {
 form input[type=text],
 form input[type=email],
 form input[type=password],
-form input[type=number] {
+form input[type=number],
+form input[type=tel] {
     margin: 0;
     margin: 0 10px;
     padding-left: 10px;
@@ -817,6 +818,9 @@ form input[type=number] {
 form .input input.small {
     width: 20%;
     margin: 0 5px 0 10px;
+}
+form .input > div {
+    margin-left: 10px;
 }
 
 form input[type=text]:focus,

@@ -26,13 +26,14 @@
       '/common/js/common',
     ));
 
+    echo $this->Js->writeBuffer(array('onDomReady' => false));
+
     echo $this->fetch('script');
 
     if (isset($assets)) {
       echo $assets;
     }
 
-    echo $this->Js->writeBuffer(array('onDomReady' => false));
   ?>
 </head>
 <body class="<?php echo $this->layout; ?>-layout">

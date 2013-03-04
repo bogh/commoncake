@@ -135,7 +135,7 @@ jQuery(function ($) {
         init: function () {
             var self = this;
 
-            $(document).on('click', 'a[rel=content]', function (e) {
+            $(document).on('click', 'a[rel~=content]', function (e) {
                 e.preventDefault();
                 self.load($(this).attr('href'));
             });

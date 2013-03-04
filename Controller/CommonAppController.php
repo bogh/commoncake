@@ -87,8 +87,12 @@ class CommonAppController extends AppController {
         $modelClass = $this->modelClass;
         $method = $options['method'];
         if (!empty($this->request->data)) {
-            if ($this->$modelClass->$method($this->request->data)) {
+            if ($data = $this->$modelClass->$method($this->request->data)) {
                 $this->_success("{$modelClass} has been saved!");
+
+                if (isset($options['callback']) && is_callable($options['callback'])) {
+                    $options['callback']($data, $this->$modelClass);
+                }
 
                 if (is_array($options['redirect'])) {
                     $this->redirect($options['redirect']);
