@@ -221,10 +221,11 @@ class CommonHelper extends AppHelper {
             }
 
             $out[] = $this->Html->tag('h3', $title);
-            $linkOptions = array('escape' => false);
 
             $list = array();
             foreach ($links as $title => $options) {
+                $linkOptions = array('escape' => false);
+
                 // icon
                 if (isset($options['icon']) && $options['icon']) {
                     $class = "icon icon-{$options['icon']}";

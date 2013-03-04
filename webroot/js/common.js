@@ -137,6 +137,7 @@ jQuery(function ($) {
 
             $(document).on('click', 'a[rel~=content]', function (e) {
                 e.preventDefault();
+                self.options.$elem = $(this);
                 self.load($(this).attr('href'));
             });
         },
@@ -206,6 +207,10 @@ jQuery(function ($) {
         },
 
         complete: function () {
+            // set active link
+            $('#sidebar li a.active').removeClass('active');
+            this.options.$elem.addClass('active');
+
             this.clear();
         },
 
