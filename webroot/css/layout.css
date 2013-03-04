@@ -220,6 +220,9 @@ aside#sidebar {
     background: #E0E0E3 url(../img/sidebar.png) repeat;
     box-shadow: -1px 0 0 #ccc inset;
 }
+#sidebar form {
+    margin: 5px 0;
+}
 
 #sidebar hr {
 display: block;

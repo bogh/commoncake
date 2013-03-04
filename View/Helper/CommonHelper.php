@@ -215,6 +215,11 @@ class CommonHelper extends AppHelper {
         }
         $out = array();
 
+        if (isset($menu['elements'])) {
+            $elements = $menu['elements'];
+            unset($menu['elements']);
+        }
+
         foreach ($menu as $title => $links) {
             if (!$links) {
                 continue;
@@ -244,7 +249,14 @@ class CommonHelper extends AppHelper {
             $out[] = $this->Html->nestedList($list);
         }
 
-        return implode($out);
+        $before = '';
+        if (isset($elements)) {
+            foreach ($elements as $e) {
+                $before .= $this->_View->element($e);
+            }
+        }
+
+        return $before . implode($out);
     }
 
     public function isActive($link) {
