@@ -116,10 +116,10 @@ class CommonAppController extends AppController {
         $modelClass = $this->modelClass;
         if ($this->$modelClass->delete($id)) {
             $this->_success("{$modelClass} has been deleted!");
-            $this->redirect($options['redirect']);
         } else {
             $this->_error("There has been an error trying to delete the {$modelClass}!");
         }
+        $this->redirect($options['redirect']);
     }
 
     protected function _view($id, $options = array()) {
