@@ -5,6 +5,8 @@ App::uses('AppController', 'Controller');
 class CommonAppController extends AppController {
 
     public function beforeFilter() {
+        $this->_detectors();
+
         parent::beforeFilter();
 
         $this->_prefix();
@@ -12,6 +14,22 @@ class CommonAppController extends AppController {
         $this->_auth();
 
         $this->_backend();
+    }
+
+    protected function _detectors() {
+        $prefixes = Configure::read('Common.backend_prefixes', array());
+        $detector = function ($request) use ($prefixes) {
+            if (empty($prefixes)) {
+                return !empty($request->prefix);
+            } else {
+                return in_array($request->prefix, $prefixes);
+            }
+
+            return false;
+        };
+        $this->request->addDetector('backend', array('callback' => $detector));
+
+        $this->request->addDetector('json', array('param' => 'ext', 'value' => 'json'));
     }
 
     /**
@@ -46,17 +64,7 @@ class CommonAppController extends AppController {
     }
 
     protected function _backend() {
-        $prefixes = Configure::read('Common.backend_prefixes', array());
-        $detector = function ($request) use ($prefixes) {
-            if (empty($prefixes)) {
-                return !empty($request->prefix);
-            } else {
-                return in_array($request->prefix, $prefixes);
-            }
 
-            return false;
-        };
-        $this->request->addDetector('backend', array('callback' => $detector));
     }
 
     /**
@@ -123,7 +131,6 @@ class CommonAppController extends AppController {
     }
 
     protected function _view($id, $options = array()) {
-
         $options = Hash::merge(array(
             // 'recursive' => 1
         ), $options);
