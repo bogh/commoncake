@@ -322,13 +322,15 @@ margin: 0; padding: 0;
     padding-left: 12%;
     margin-right: 1px;
 }
-
-#sidebar li a.active,
 #sidebar li a:hover {
     color: #444;
     padding-left: 20%;
     text-decoration: none;
     background: #f5f5f5;
+}
+#sidebar li a.active {
+    background: #f5f5f5;
+    color: #444;
 }
 
 /* Sidebar Icons */
