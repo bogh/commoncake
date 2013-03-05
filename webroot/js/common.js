@@ -366,6 +366,9 @@ jQuery(function ($) {
                         case 'modal':
                             $holder = $this.find('.modal-body');
                             break;
+                        default:
+                            $holder = $(options.holder);
+                            break;
                     }
 
                     if ($holder) {
