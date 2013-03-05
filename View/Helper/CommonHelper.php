@@ -182,6 +182,10 @@ class CommonHelper extends AppHelper {
                 $linkOptions['data-confirm'] = $options['confirm'];
             }
 
+            if ($options['modal']) {
+                $defaults['rel'] = 'tooltip content modal';
+            }
+
             $link = '';
             if (isset($options['icon'])) {
                 $link = "<i class=\"icon-{$options['icon']}\"></i>";

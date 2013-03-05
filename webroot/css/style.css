@@ -89,6 +89,9 @@ span.help-icon {
 table.edit-list {
     vertical-align: top
 }
+form .input.after {
+    display: inline-block;
+}
 form .input span {
     font-weight: bold;
 }

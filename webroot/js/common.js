@@ -300,7 +300,7 @@ jQuery(function ($) {
     });
 
     // modals
-    $(document).on('click', 'a[rel=modal]', function (e) {
+    $(document).on('click', 'a[rel~=modal]', function (e) {
         e.preventDefault();
 
         var $this = $(this);
@@ -333,6 +333,7 @@ jQuery(function ($) {
                 $modal.modal();
             }
         });
+        return false;
     });
 
     // General money input
