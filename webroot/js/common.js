@@ -271,8 +271,8 @@ jQuery(function ($) {
 
     // coaie nu comenta ca nu am facut eu codu asta :D e luat de la un fraier, easy shit
     $(document).on('click', 'a[data-confirm]', function (e) {
-        var href = $(this).attr('href');
         e.preventDefault();
+        var href = $(this).attr('href');
         if (!$('#dataConfirmModal').length) {
             $('body').append('<div id="dataConfirmModal" class="modal fade fast" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div>');
         }
