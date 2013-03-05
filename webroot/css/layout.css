@@ -419,6 +419,7 @@ width: 87%;
 /* Modules */
 
 .module {
+    float: left;
     margin: 10px 1% 5px 1%;
     width: 98%;
     border: 1px solid #9BA0AF;
@@ -470,28 +471,23 @@ border-top-left-radius: 5px; border-top-right-radius: 5px;
 }
 
 .width_half {
-    float: left;
     margin-right: 0;
     width: 48%;
 }
 
 .width_quarter {
-    float: left;
     margin-right: 0;
     width: 23%;
 }
 
 .width_3_quarter {
-    float: left;
     margin-right: 0;
     width: 74%;
 }
-
 /* Stats Module */
-
 .stats_graph {
-float: left;
-width: 64%;
+    float: left;
+    width: 64%;
 }
 
 .stats_overview {
@@ -831,11 +827,11 @@ form input[type=text]:focus,
 form input[type=email]:focus,
 form input[type=password]:focus,
 form input[type=number]:focus {
-outline: none;
-border: 1px solid #77BACE;
--webkit-box-shadow: inset 0 2px 2px #ccc, 0 0 10px #ADDCE6;
--moz-box-shadow: inset 0 2px 2px #ccc, 0 0 10px #ADDCE6;
-box-shadow: inset 0 2px 2px #ccc, 0 0 10px #ADDCE6;
+    outline: none;
+    border: 1px solid #77BACE;
+    -webkit-box-shadow: inset 0 2px 2px #ccc, 0 0 10px #ADDCE6;
+    -moz-box-shadow: inset 0 2px 2px #ccc, 0 0 10px #ADDCE6;
+    box-shadow: inset 0 2px 2px #ccc, 0 0 10px #ADDCE6;
 }
 
 .width_half table input[type=number] {
@@ -843,29 +839,32 @@ box-shadow: inset 0 2px 2px #ccc, 0 0 10px #ADDCE6;
 }
 
 form select {
-margin: 0 10px;
-width: 89%;
-/*height: 20px;*/
-border: 1px solid #bbb;
-color: #666666;
+    margin: 0 10px;
+    width: 89%;
+    /*height: 20px;*/
+    border: 1px solid #bbb;
+    color: #666666;
+}
+form .select .checkbox {
+    float: left;
+    width: 20%;
+    margin-left: 10%;
 }
 
 form textarea {
-display: block;
-float: left;
-margin: 0 0.5%;
-margin: 0 10px;
-padding-left: 10px;
-width: 85%;
-border: 1px solid #BBBBBB;
--webkit-border-radius: 5px;
--moz-border-radius: 5px;
-border-radius: 5px;
-background-position: 10px 6px;
--webkit-box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff;
--moz-box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff;
-box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff;
-color: #666666;
+    display: block;
+    margin: 0 10px;
+    padding-left: 10px;
+    width: 85%;
+    border: 1px solid #BBBBBB;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-position: 10px 6px;
+    -webkit-box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff;
+    -moz-box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff;
+    box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff;
+    color: #666666;
 }
 
 form textarea:focus {
