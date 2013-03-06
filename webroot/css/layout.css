@@ -402,11 +402,12 @@ margin-top: 20%;
 
 
 section#main {
-float: left;
-margin-top: -2px;
-min-height: 500px;
-width: 87%;
-/* background: url(../img/sidebar_shadow.png) repeat-y left top; */
+    float: left;
+    margin-top: -2px;
+    min-height: 500px;
+    width: 87%;
+ /*background: url(../img/sidebar_shadow.png) repeat-y left top;*/
+    padding-top: 10px;
 }
 
 #main header h3 {
