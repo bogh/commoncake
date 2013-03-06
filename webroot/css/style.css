@@ -89,6 +89,32 @@ span.help-icon {
 table.edit-list {
     vertical-align: top
 }
+form legend {
+    font-size: 13px;
+    display: inline-block;
+    width: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    padding: 3px;
+    line-height: 13px;
+}
+form .input.radio input[type="radio"] {
+    margin-left: 0;
+    margin-right: 0;
+}
+form .input.textarea {
+    padding: 10px;
+}
+form .input.radio fieldset {
+    padding: 10px;
+    margin-right: 20px;
+}
+form .input .radio-label {
+    font-size: 14px;
+    font-weight: bold;
+}
 form .input.after {
     display: inline-block;
 }

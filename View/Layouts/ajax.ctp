@@ -1,8 +1,15 @@
 <?php
-    if (isset($refresh)) {
-        echo $this->Html->scriptBlock("window.common.reload();");
+    echo $this->Session->flash();
+    if (isset($redirect)) {
+        switch ($redirect) {
+            case 'close':
+                echo $this->Html->scriptBlock("window.common.modal.close(500);");
+                break;
+            case 'refresh':
+                echo $this->Html->scriptBlock("window.common.reload();");
+                break;
+        }
     } else {
-        echo $this->Session->flash();
         echo $this->fetch('content');
     }
 
