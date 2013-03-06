@@ -45,6 +45,15 @@ jQuery(function ($) {
         }, t * 1000);
     };
 
+    window.common.modal = {
+        close: function (delay) {
+            delay = delay || 0;
+            _.delay(function () {
+                $('.modal[aria-hidden=false]').modal('hide');
+            }, delay);
+        }
+    };
+
     $('[rel~=tooltip]').tooltip();
     $('[rel~=popover]').popover();
 

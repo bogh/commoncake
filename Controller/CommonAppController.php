@@ -98,8 +98,8 @@ class CommonAppController extends AppController {
 
                 if (is_array($options['redirect'])) {
                     $this->redirect($options['redirect']);
-                } elseif ($options['redirect'] == 'refresh') {
-                    $this->set('refresh', true);
+                } else {
+                    $this->set('redirect', $options['redirect']);
                 }
             } else {
                 $this->_error();
