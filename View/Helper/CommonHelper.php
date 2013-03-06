@@ -180,6 +180,11 @@ class CommonHelper extends AppHelper {
 
             if (isset($options['confirm'])) {
                 $linkOptions['data-confirm'] = $options['confirm'];
+                $linkOptions['rel'] = 'tooltip';
+            }
+
+            if (isset($options['modal']) && $options['modal']) {
+                $linkOptions['rel'] = 'tooltip modal';
             }
 
             $link = '';
