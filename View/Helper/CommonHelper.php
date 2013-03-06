@@ -168,8 +168,7 @@ class CommonHelper extends AppHelper {
     public function actions($actions) {
         $out = array();
         $defaults = array(
-            'escape' => false,
-            'rel' => 'tooltip content'
+            'escape' => false
         );
         foreach ($actions as $title => $options) {
             $linkOptions = array();
@@ -180,11 +179,11 @@ class CommonHelper extends AppHelper {
 
             if (isset($options['confirm'])) {
                 $linkOptions['data-confirm'] = $options['confirm'];
-                $linkOptions['rel'] = 'tooltip';
+                $linkOptions['rel'] = false;
             }
 
             if (isset($options['modal']) && $options['modal']) {
-                $linkOptions['rel'] = 'tooltip modal';
+                $linkOptions['rel'] = 'modal';
             }
 
             $link = '';
