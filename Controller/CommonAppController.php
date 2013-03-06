@@ -12,8 +12,6 @@ class CommonAppController extends AppController {
         $this->_prefix();
         $this->_security();
         $this->_auth();
-
-        $this->_backend();
     }
 
     protected function _detectors() {
@@ -61,10 +59,6 @@ class CommonAppController extends AppController {
         if (property_exists($this, '_allowedActions')) {
             $this->Auth->allow($this->_allowedActions);
         }
-    }
-
-    protected function _backend() {
-
     }
 
     /**
