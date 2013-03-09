@@ -791,7 +791,6 @@ form input[type=email],
 form input[type=password],
 form input[type=number],
 form input[type=tel] {
-    margin: 0;
     margin: 0 10px;
     padding-left: 10px;
     width: 85%;

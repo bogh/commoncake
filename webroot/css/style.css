@@ -118,6 +118,9 @@ form .input .radio-label {
 form .input.after {
     display: inline-block;
 }
+form .input.after input {
+    margin-left: 10px;
+}
 form .input span {
     font-weight: bold;
 }
