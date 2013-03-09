@@ -28,7 +28,12 @@ jQuery(function ($) {
 
 jQuery(function ($) {
 
-    window.common = {};
+    window.common = {
+        title: function (t) {
+            document.title = t;
+            $('h2.section_title').html(t);
+        }
+    };
 
     $.ajaxSetup({
         beforeSend: function (jqXHR, settings) {

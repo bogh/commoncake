@@ -17,8 +17,9 @@
             $this->fetch('script'),
 
             $this->fetch('content'),
+
             $this->Html->scriptBlock(
-                "document.title = '" . $this->fetch('title') . "';"
+                "window.common.title('" . $this->fetch('title') . "');"
             )
         ));
     }
