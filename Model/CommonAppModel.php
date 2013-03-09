@@ -21,4 +21,19 @@ class CommonAppModel extends AppModel {
         }
     }
 
+    /**
+     * Validate order of dates
+     */
+    public function validateDateOrder($value, $other, $reverse = false) {
+        $data = $this->data[$this->alias];
+        $keys = array_keys($value);
+        $value = $value[$keys[0]];
+
+        if ($reverse === true) {
+            return strtotime($data[$other]) <= strtotime($value);
+        }
+
+        return strtotime($value) <= strtotime($data[$other]);
+    }
+
 }
