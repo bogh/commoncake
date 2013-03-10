@@ -47,7 +47,7 @@ jQuery(function ($) {
         t = t || 0;
         _.delay(function () {
             window.location.reload(true);
-        }, t * 1000);
+        }, t);
     };
 
     window.common.modal = {
@@ -345,7 +345,6 @@ jQuery(function ($) {
 
                 $this.button('reset');
                 $modal.on('hidden', function () {
-                    console.log('removed');
                     $modal.remove();
                 });
                 $modal.modal();
