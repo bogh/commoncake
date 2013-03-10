@@ -881,9 +881,12 @@ form textarea:focus {
 }
 
 form .inline label {
-    float: left;
-    width: 120px;
-    margin-right: 5px;
+/*    float: left;
+    width: 120px;*/
+    /*margin-right: 5px;*/
+}
+form .radio label {
+    margin: 0 0 5px 10px;
 }
 form .inline .error-message {
     margin-left: 130px;

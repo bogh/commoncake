@@ -97,15 +97,14 @@ form legend {
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-    padding: 3px;
+    padding: 3px 5px;
     line-height: 13px;
 }
 form .input.radio input[type="radio"] {
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0;
 }
 form .input.textarea {
-    padding: 10px;
+    /*padding: 10px;*/
 }
 form .input.radio fieldset {
     padding: 10px;
