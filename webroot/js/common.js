@@ -344,7 +344,12 @@ jQuery(function ($) {
                 }
 
                 $this.button('reset');
+                $modal.on('hidden', function () {
+                    console.log('removed');
+                    $modal.remove();
+                });
                 $modal.modal();
+
             }
         });
         return false;
