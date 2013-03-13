@@ -783,7 +783,7 @@ form .checkbox input {
 }
 .error-message {
     color: #7B040F;
-    margin: 0 0 0 20px;
+    margin: 2px 0 0 20px;
     /*display: inline-block;*/
 }
 form input[type=text],
@@ -825,7 +825,7 @@ form .input input.small {
     margin: 0 5px 0 10px;
 }
 form .input > div {
-    margin-left: 10px;
+    /*margin-left: 10px;*/
 }
 
 form input[type=text]:focus,
