@@ -65,12 +65,17 @@ class CommonAppController extends AppController {
      * List model
      */
     protected function _index($options = array()) {
-        $_defaults = array();
+        $_defaults = array(
+            'conditions' => array()
+        );
         $options = Hash::merge($_defaults, $options);
 
         $modelClass = $this->modelClass;
         $variable = Inflector::variable(Inflector::pluralize($modelClass));
-
+        if (method_exists($this->$modelClass, 'filter') && isset($this->request->query['filter'])) {
+            $options['conditions'] = Hash::merge($options['conditions'],
+                $this->$modelClass->filter($this->request->query));
+        }
         $this->Paginator->settings[$modelClass] = $options;
 
         $this->set($variable, $this->Paginator->paginate($modelClass));

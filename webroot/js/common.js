@@ -1,6 +1,12 @@
 jQuery(function ($) {
     //On Click Event
 
+    $(document).on('click', '[rel~=filter]', function () {
+        var $link = $(this);
+        $link.hide();
+        $($link.data('filter')).show();
+    });
+
     $(document).on('click', '[rel~=scroll-to-top]', function () {
         $('body').animate({
             scrollTop: 0

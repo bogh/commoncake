@@ -164,3 +164,25 @@ span.to-list-elem {
     border-bottom: 1px solid #eee;
     box-shadow: 0 -1px 0 #ccc inset;
 }
+.common-filter {
+    margin:  10px 0 0px 5px;
+}
+.common-filter div.input,
+.common-filter div.submit {
+    display: inline-block;
+    padding: 5px 0;
+}
+.common-filter div.input label {
+    display: inline-block;
+}
+.common-filter div.input select,
+.common-filter div.input input[type="text"] {
+    width: auto;
+    display: inline-block;
+}
+.common-filter input[type="submit"] {
+    margin-right: 10px;
+}
+button[rel~="filter"] {
+    margin-left: 17px;
+}

@@ -357,4 +357,80 @@ class CommonHelper extends AppHelper {
         return $this->Html->link($title, $url, $options, $confirmMessage);
     }
 
+    public function filter($modelClass, $fields = array()) {
+        App::uses($modelClass, 'Model');
+        if (!property_exists($modelClass, 'filters')) {
+            return false;
+        }
+
+        $inputs = array(
+            'filter' => array(
+                'type' => 'hidden',
+                'value' => 1
+            ),
+            'legend' => false,
+            'fieldset' => false
+        );
+
+        if (!$fields) {
+            $modelFilters = $modelClass::$filters;
+            foreach ($modelFilters as $k => $v) {
+                if (is_numeric($k)) {
+                    $fields[] = $v;
+                    unset($modelFilters[$k]);
+                    $modelFilters[$v] = array();
+                } else {
+                    $fields[] = $k;
+                }
+            }
+        }
+
+        foreach ($fields as $field) {
+            $options = Hash::merge(array(
+                'type' => 'text',
+            ), $modelFilters[$field]);
+            switch ($options['type']) {
+                case 'select':
+                    $var = Inflector::pluralize(Inflector::variable($field));
+                    if (!isset($this->_View->viewVars[$var])) {
+                        $inputs[$field]['options'] = ClassRegistry::init(Inflector::classify($var))->find('list');
+                    }
+                    $inputs[$field]['empty'] = '';
+                    break;
+            }
+            $inputs[$field]['type'] = $options['type'];
+            $inputs[$field]['value'] = (isset($this->request->query[$field]) ? $this->request->query[$field] : '' );
+        }
+
+        $link = '';
+        $class = 'common-filter';
+        if (!isset($this->request->query['filter'])) {
+            $class = 'common-filter hide';
+            $link = $this->Html->tag('button', '<i class="icon-search icon-white"></i> Filter', array(
+                'rel' => 'filter',
+                'data-filter' => "#{$modelClass}-filter",
+                'class' => 'toggle-filter btn btn-small btn-info',
+                'escape' => false
+            ));
+        }
+        $out = $link.$this->Html->div($class, implode(array(
+            $this->Form->create(array(
+                'type' => 'get',
+                'novalidate' => true,
+                'inputDefaults' => array(
+                    'required' => false
+                )
+            )),
+            $this->Form->inputs($inputs),
+            $this->Form->submit('Filter', array('class' => 'btn btn-info')),
+            $this->Html->link('Cancel', array(
+                'controller' => $this->params['controller'],
+                'action' => $this->params['action']
+            ), array('class' => 'btn')),
+            $this->Form->end()
+        )), array('id' => "{$modelClass}-filter"));
+
+        return $out;
+    }
+
 }
