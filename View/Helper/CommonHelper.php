@@ -368,7 +368,6 @@ class CommonHelper extends AppHelper {
                 'type' => 'hidden',
                 'value' => 1
             ),
-            'legend' => false,
             'fieldset' => false
         );
 
@@ -399,7 +398,9 @@ class CommonHelper extends AppHelper {
                     break;
             }
             $inputs[$field]['type'] = $options['type'];
-            $inputs[$field]['value'] = (isset($this->request->query[$field]) ? $this->request->query[$field] : '' );
+
+            $q = $this->request->query;
+            $inputs[$field]['value'] = (isset($q[$field]) ? $q[$field] : '');
         }
 
         $link = '';
@@ -413,13 +414,11 @@ class CommonHelper extends AppHelper {
                 'escape' => false
             ));
         }
-        $out = $link.$this->Html->div($class, implode(array(
+        $out = $link . $this->Html->div($class, implode(array(
             $this->Form->create(array(
                 'type' => 'get',
                 'novalidate' => true,
-                'inputDefaults' => array(
-                    'required' => false
-                )
+                'inputDefaults' => array('required' => false )
             )),
             $this->Form->inputs($inputs),
             $this->Form->submit('Filter', array('class' => 'btn btn-info')),

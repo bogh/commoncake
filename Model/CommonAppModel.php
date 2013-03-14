@@ -48,19 +48,17 @@ class CommonAppModel extends AppModel {
         }
 
         foreach ($modelFilters as $f => $o) {
-
             if (isset($query[$f]) && !empty($query[$f])) {
                 if ($this->hasField($f)) {
                     // check for _id stuff
-                    $field_name = $f;
+                    $fieldName = $f;
                 } else {
-                    if ($this->hasField($f."_id")) {
-                        $field_name = $f."_id";
-                    } else {
-                        $field_name = null;
+                    $fieldName = "{$f}_id";
+                    if (!$this->hasField($fieldName)) {
+                        $fieldName = null;
                     }
                 }
-                if ($field_name) {
+                if ($fieldName) {
                     $options = Hash::merge(array(
                         'type' => 'text',
                         'condition' => ''
@@ -70,18 +68,19 @@ class CommonAppModel extends AppModel {
                     switch ($options['condition']) {
                         case 'like':
                             $conditions[] = array(
-                                  "{$this->alias}.{$field_name} LIKE" => "%{$query[$f]}%"
+                                "{$this->alias}.{$fieldName} LIKE" => "%{$query[$f]}%"
                             );
                             break;
                         default:
                             $conditions[] = array(
-                                "{$this->alias}.{$field_name} {$options['condition']}" => $query[$f]
+                                "{$this->alias}.{$fieldName} {$options['condition']}" => $query[$f]
                             );
                             break;
                     }
                 }
             }
         }
+
         return $conditions;
     }
 
