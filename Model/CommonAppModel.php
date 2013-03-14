@@ -36,4 +36,53 @@ class CommonAppModel extends AppModel {
         return strtotime($value) <= strtotime($data[$other]);
     }
 
+    public function filter($query) {
+        $conditions = array();
+        $modelFilters = static::$filters;
+        // check for fileds with no options
+        foreach ($modelFilters as $k => $v) {
+            if (is_numeric($k)) {
+                unset($modelFilters[$k]);
+                $modelFilters[$v] = array();
+            }
+        }
+
+        foreach ($modelFilters as $f => $o) {
+
+            if (isset($query[$f]) && !empty($query[$f])) {
+                if ($this->hasField($f)) {
+                    // check for _id stuff
+                    $field_name = $f;
+                } else {
+                    if ($this->hasField($f."_id")) {
+                        $field_name = $f."_id";
+                    } else {
+                        $field_name = null;
+                    }
+                }
+                if ($field_name) {
+                    $options = Hash::merge(array(
+                        'type' => 'text',
+                        'condition' => ''
+                    ), $o);
+
+                    // build query fiters
+                    switch ($options['condition']) {
+                        case 'like':
+                            $conditions[] = array(
+                                  "{$this->alias}.{$field_name} LIKE" => "%{$query[$f]}%"
+                            );
+                            break;
+                        default:
+                            $conditions[] = array(
+                                "{$this->alias}.{$field_name} {$options['condition']}" => $query[$f]
+                            );
+                            break;
+                    }
+                }
+            }
+        }
+        return $conditions;
+    }
+
 }
