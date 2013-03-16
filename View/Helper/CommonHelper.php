@@ -433,13 +433,4 @@ class CommonHelper extends AppHelper {
         return $out;
     }
 
-    public function editImage($field, $type = null) {
-        if (Hash::check($this->request->data, $field)) {
-            $value = Hash::extract($this->request->data, $field);
-            $value = array_pop($value);
-            return $this->Upload->image($value, $type);
-        }
-        return '';
-    }
-
 }
