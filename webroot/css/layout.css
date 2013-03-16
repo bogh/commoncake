@@ -805,6 +805,9 @@ form input[type=tel] {
     box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff;
     color: #666666;
 }
+form input[type=file] {
+    margin: 0 10px;
+}
 form .datepicker-h {
     float: left;
     clear: none;
@@ -1005,4 +1008,8 @@ h4.alert_success {
     color: #32510F;
     text-indent: 40px;
     font-size: 14px;
+}
+.image {
+    text-align: center;
+    padding: 5px;
 }

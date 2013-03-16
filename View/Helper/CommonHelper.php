@@ -16,7 +16,8 @@ class CommonHelper extends AppHelper {
         'Time',
         'Js',
         'Paginator',
-        'Form'
+        'Form',
+        'Upload.Upload'
     );
 
     public function afterRender($viewFile) {
@@ -430,6 +431,15 @@ class CommonHelper extends AppHelper {
         )), array('id' => "{$modelClass}-filter"));
 
         return $out;
+    }
+
+    public function editImage($field, $type = null) {
+        if (Hash::check($this->request->data, $field)) {
+            $value = Hash::extract($this->request->data, $field);
+            $value = array_pop($value);
+            return $this->Upload->image($value, $type);
+        }
+        return '';
     }
 
 }
