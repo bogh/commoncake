@@ -332,7 +332,9 @@ jQuery(function ($) {
             type: 'GET',
             modal: true,
             success: function (data) {
-                var $modal = $(data),
+                $('body').append(data);
+
+                var $modal = $('body > .modal').last(),
                     wW = $(window).width(),
                     mW = $modal.data('width');
 
