@@ -15,8 +15,6 @@ class CommonAppModel extends AppModel {
             $query['limit'] = 1;
             if ($this->hasField('created')) {
                 $query['order'] = "{$this->alias}.created DESC";
-            } elseif ($this->hasField('id')) {
-                $query['order'] = "{$this->alias}.id DESC";
             } else {
                 $query['order'] = "{$this->alias}.{$this->primaryKey} DESC";
             }
