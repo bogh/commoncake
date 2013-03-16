@@ -8,6 +8,28 @@ class CommonAppModel extends AppModel {
 
     public $recursive = -1;
 
+    public $findMethods = array('last' => true);
+
+    protected function _findLast($state, $query, $results = array()) {
+        if($state == 'before') {
+            $query['limit'] = 1;
+            if ($this->hasField('created')) {
+                $query['order'] = "{$this->alias}.created DESC";
+            } elseif ($this->hasField('id')) {
+                $query['order'] = "{$this->alias}.id DESC";
+            } else {
+                $query['order'] = "{$this->alias}.{$this->primaryKey} DESC";
+            }
+            return $query;
+        } elseif ($state === 'after') {
+            if (empty($results[0])) {
+                return array();
+            }
+            return $results[0];
+        }
+        return $results;
+    }
+
     protected function _hasManyDelete() {
         // check for deleted hasMany
         foreach ($this->hasMany as $alias => $settings) {
