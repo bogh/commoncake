@@ -229,7 +229,9 @@ jQuery(function ($) {
         complete: function () {
             // set active link
             $('#sidebar li a.active').removeClass('active');
-            this.options.$elem.addClass('active');
+            if (this.options.$elem) {
+                this.options.$elem.addClass('active');
+            }
 
             this.clear();
         },
