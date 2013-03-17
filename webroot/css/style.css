@@ -123,6 +123,10 @@ form .input.after input {
 form .input span {
     font-weight: bold;
 }
+form .input .info {
+    margin: 0 0 0 20px;
+    font-size: 11px;
+}
 .modal {
     /*padding: 10px 0;*/
 }
