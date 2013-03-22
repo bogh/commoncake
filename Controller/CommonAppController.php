@@ -66,13 +66,15 @@ class CommonAppController extends AppController {
      */
     protected function _index($options = array()) {
         $_defaults = array(
-            'conditions' => array()
+            'conditions' => array(),
+            'limit' => 1
         );
         $options = Hash::merge($_defaults, $options);
 
         $modelClass = $this->modelClass;
         $variable = Inflector::variable(Inflector::pluralize($modelClass));
-        if (method_exists($this->$modelClass, 'filter') && isset($this->request->query['filter'])) {
+        if (method_exists($this->$modelClass, 'filter') &&
+                isset($this->request->query['filter'])) {
             $options['conditions'] = Hash::merge($options['conditions'],
                 $this->$modelClass->filter($this->request->query));
         }

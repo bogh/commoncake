@@ -433,4 +433,15 @@ class CommonHelper extends AppHelper {
         return $out;
     }
 
+    public function pagination() {
+        $numbers = $this->Paginator->numbers(array(
+            'tag' => 'li',
+            'separator' => false,
+            'currentTag' => 'a'
+        ));
+        return $this->Html->tag('footer', $this->Html->tag('ul', $numbers), array(
+            'class' => 'pagination'
+        ));
+    }
+
 }

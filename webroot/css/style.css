@@ -190,3 +190,15 @@ span.to-list-elem {
 button[rel~="filter"] {
     margin-left: 17px;
 }
+.pagination {
+    margin: 0;
+}
+.pagination ul>li>a {
+    padding: 6px 12px;
+    border: none;
+    background: #fff;
+    border-right: 1px solid #ddd;
+}
+.pagination .current a {
+    background: none;
+}
