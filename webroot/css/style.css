@@ -23,11 +23,6 @@ a.js {
 form {
     margin: 0;
 }
-form .input.datepicker {
-    width: 265px;
-    float: left;
-    clear: none;
-}
 .simple-layout .flash-message {
     display: block;
     max-width: 400px;
