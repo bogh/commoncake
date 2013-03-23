@@ -67,7 +67,7 @@ class CommonAppController extends AppController {
     protected function _index($options = array()) {
         $_defaults = array(
             'conditions' => array(),
-            'limit' => 1
+            'limit' => 50
         );
         $options = Hash::merge($_defaults, $options);
 

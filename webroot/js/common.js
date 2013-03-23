@@ -35,9 +35,19 @@ jQuery(function ($) {
 jQuery(function ($) {
 
     window.common = {
+
         title: function (t) {
             document.title = t;
             $('h2.section_title').html(t);
+        },
+
+        datepicker: function () {
+            // Hack, remove current datepicker cause the ajax content doesn't bind to it
+            // for some reason
+            $('#ui-datepicker-div').remove();
+            $('.datepicker input, input.datepicker').datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
         }
     };
 
@@ -306,12 +316,6 @@ jQuery(function ($) {
         $('#dataConfirmModal').modal({show:true});
 
         return false;
-    });
-
-    $(document).on('focus', '.input.datepicker-h input[type="text"]', function () {
-        $(this).datepicker({
-            format: 'yyyy-mm-dd'
-        });
     });
 
     // togglers

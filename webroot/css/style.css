@@ -28,9 +28,6 @@ form .input.datepicker {
     float: left;
     clear: none;
 }
-form .input.datepicker input[type=text] {
-    width: 206px;
-}
 .simple-layout .flash-message {
     display: block;
     max-width: 400px;

@@ -808,15 +808,17 @@ form input[type=tel] {
 form input[type=file] {
     margin: 0 10px;
 }
-form .datepicker-h {
+form .datepicker {
     float: left;
     clear: none;
 }
-form .datepicker-h input {
+form .datepicker input,
+form input.datepicker {
     float: left;
-    width: 207px;
+    width: 214px;
+    margin: 0 0 10px 10px;
 }
-form .datepicker-h .error-message {
+form .datepicker .error-message {
     display: block;
 }
 form input[type=number] {

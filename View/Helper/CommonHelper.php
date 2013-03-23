@@ -26,16 +26,21 @@ class CommonHelper extends AppHelper {
             $this->_View->layout = "Common.{$layout}";
         }
 
-        // Load extra assets
-        $assets = '';
-        if (isset($this->settings['css'])) {
-            $assets .= $this->Html->css((array) $this->settings['css']);
-        }
-        if (isset($this->settings['script'])) {
-            $assets .= $this->Html->script((array) $this->settings['script']);
-        }
+        if (!$this->request->is('ajax')) {
+            // Load extra assets
+            $assets = '';
+            if (isset($this->settings['css'])) {
+                $assets .= $this->Html->css((array) $this->settings['css']);
+            }
+            if (isset($this->settings['script'])) {
+                $assets .= $this->Html->script((array) $this->settings['script']);
+            }
 
-        $this->_View->set(compact('assets'));
+            if (isset($this->settings['ui']) && $this->settings['ui']) {
+                $this->jUi();
+            }
+            $this->_View->set(compact('assets'));
+        }
     }
 
     /**
@@ -389,15 +394,20 @@ class CommonHelper extends AppHelper {
             $options = Hash::merge(array(
                 'type' => 'text',
             ), $modelFilters[$field]);
+
             switch ($options['type']) {
                 case 'select':
                     $var = Inflector::pluralize(Inflector::variable($field));
                     if (!isset($this->_View->viewVars[$var])) {
-                        $inputs[$field]['options'] = ClassRegistry::init(Inflector::classify($var))->find('list');
+                        $Model = ClassRegistry::init(Inflector::classify($var));
+                        if ($Model) {
+                            $inputs[$field]['options'] = $Model->find('list');
+                        }
                     }
                     $inputs[$field]['empty'] = '';
                     break;
             }
+
             $inputs[$field]['type'] = $options['type'];
 
             $q = $this->request->query;
@@ -415,18 +425,23 @@ class CommonHelper extends AppHelper {
                 'escape' => false
             ));
         }
+
         $out = $link . $this->Html->div($class, implode(array(
             $this->Form->create(array(
                 'type' => 'get',
                 'novalidate' => true,
                 'inputDefaults' => array('required' => false )
             )),
+
             $this->Form->inputs($inputs),
+
             $this->Form->submit('Filter', array('class' => 'btn btn-info')),
+
             $this->Html->link('Cancel', array(
                 'controller' => $this->params['controller'],
                 'action' => $this->params['action']
             ), array('class' => 'btn')),
+
             $this->Form->end()
         )), array('id' => "{$modelClass}-filter"));
 
@@ -439,9 +454,20 @@ class CommonHelper extends AppHelper {
             'separator' => false,
             'currentTag' => 'a'
         ));
+
         return $this->Html->tag('footer', $this->Html->tag('ul', $numbers), array(
             'class' => 'pagination'
         ));
+    }
+
+    /**
+     * Include jquery ui in your theme
+     */
+    public function jUi() {
+        $this->Html->css('/common/css/smoothness/jquery-ui.min', null, array(
+            'inline' => false
+        ));
+        $this->Html->script('/common/js/jquery-ui.min', array('inline' => false));
     }
 
 }
