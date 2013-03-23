@@ -24,22 +24,22 @@ class CommonHelper extends AppHelper {
         if ($this->request->is('backend')) {
             $layout = $this->_View->layout;
             $this->_View->layout = "Common.{$layout}";
-        }
 
-        if (!$this->request->is('ajax')) {
-            // Load extra assets
-            $assets = '';
-            if (isset($this->settings['css'])) {
-                $assets .= $this->Html->css((array) $this->settings['css']);
-            }
-            if (isset($this->settings['script'])) {
-                $assets .= $this->Html->script((array) $this->settings['script']);
-            }
+            if (!$this->request->is('ajax')) {
+                // Load extra assets
+                $assets = '';
+                if (isset($this->settings['css'])) {
+                    $assets .= $this->Html->css((array) $this->settings['css']);
+                }
+                if (isset($this->settings['script'])) {
+                    $assets .= $this->Html->script((array) $this->settings['script']);
+                }
 
-            if (isset($this->settings['ui']) && $this->settings['ui']) {
-                $this->jUi();
+                if (isset($this->settings['ui']) && $this->settings['ui']) {
+                    $this->jUi();
+                }
+                $this->_View->set(compact('assets'));
             }
-            $this->_View->set(compact('assets'));
         }
     }
 
