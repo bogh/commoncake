@@ -41,13 +41,14 @@ jQuery(function ($) {
             $('h2.section_title').html(t);
         },
 
-        datepicker: function () {
+        datepicker: function (options) {
             // Hack, remove current datepicker cause the ajax content doesn't bind to it
             // for some reason
             $('#ui-datepicker-div').remove();
-            $('.datepicker input, input.datepicker').datepicker({
+            options = _.defaults(options, {
                 dateFormat: 'yy-mm-dd'
             });
+            $('.datepicker input, input.datepicker').datepicker(options);
         }
     };
 
