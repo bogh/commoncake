@@ -80,13 +80,8 @@ class CommonHelper extends AppHelper {
      * @param mixed $value
      * @access public
      */
-    public function date($value = null, $split = false) {
-        if ($split) {
-            return $value ? nl2br($this->Time->format(ADMIN_DATE_SPLIT, $value)) : 'N/A';
-        } else {
-            return $value ? $this->Time->format(ADMIN_DATE, $value) : 'N/A';
-        }
-
+    public function date($value = null, $format = ADMIN_DATE) {
+        return $value ? $this->Time->format(ADMIN_DATE, $value) : 'N/A';
     }
 
     /**
