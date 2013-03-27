@@ -3,6 +3,6 @@
     $class = '';
   }
 ?>
-<h4 class="<?php echo $class; ?>">
+<h4 class="flash-message <?php echo $class; ?>">
   <?php echo $message; ?>
 </h4>
