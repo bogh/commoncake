@@ -443,15 +443,38 @@ class CommonHelper extends AppHelper {
         return $out;
     }
 
-    public function pagination() {
+    public function pagination($actions = array()) {
+        $actions = (array) $actions;
+        $bulk = array();
+        foreach ($actions as $a) {
+            $bulk[] = $this->Form->submit($a, array(
+                'name' => 'action',
+                'div' => false,
+                'class' => 'btn btn-mini btn-primary'
+            ));
+        }
+
         $numbers = $this->Paginator->numbers(array(
             'tag' => 'li',
             'separator' => false,
             'currentTag' => 'a'
         ));
 
-        return $this->Html->tag('footer', $this->Html->tag('ul', $numbers), array(
+        return $this->Html->tag('footer', implode(array(
+            $this->Html->div('submit_link', implode($bulk)),
+            $this->Html->tag('ul', $numbers)
+        )), array(
             'class' => 'pagination'
+        ));
+    }
+
+    /**
+     * Outputs a checkbox for use in index pages for bulk updates
+     */
+    public function actionCheck($value) {
+        return $this->Form->checkbox('id.', array(
+            'value' => $value,
+            'hiddenField' => false
         ));
     }
 
