@@ -388,6 +388,8 @@ class CommonHelper extends AppHelper {
         foreach ($fields as $field) {
             $options = Hash::merge(array(
                 'type' => 'text',
+                'interval' => false,
+                'datepicker' => false,
             ), $modelFilters[$field]);
 
             switch ($options['type']) {
@@ -403,10 +405,31 @@ class CommonHelper extends AppHelper {
                     break;
             }
 
-            $inputs[$field]['type'] = $options['type'];
-
             $q = $this->request->query;
-            $inputs[$field]['value'] = (isset($q[$field]) ? $q[$field] : '');
+
+            if (!$options['interval']) {
+                $inputs[$field]['type'] = $options['type'];
+                $inputs[$field]['value'] = (isset($q[$field]) ? $q[$field] : '');
+
+                if ($options['datepicker']) {
+                    $inputs[$field]['div'] = 'input datepicker';
+                }
+
+            } else {
+                $f1 = "start_{$field}";
+                $f2 = "end_{$field}";
+
+                $inputs[$f2]['type'] = $inputs[$f1]['type'] = $options['type'];
+
+                $inputs[$f1]['value'] = (isset($q[$f1]) ? $q[$f1] : '');
+                $inputs[$f2]['value'] = (isset($q[$f2]) ? $q[$f2] : '');
+
+                if ($options['datepicker']) {
+                    $inputs[$f1]['div'] = $inputs[$f2]['div'] =  'input datepicker';
+                }
+
+            }
+
         }
 
         $link = '';

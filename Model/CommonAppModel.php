@@ -68,21 +68,39 @@ class CommonAppModel extends AppModel {
         }
 
         foreach ($modelFilters as $f => $o) {
-            if (isset($query[$f]) && !empty($query[$f])) {
+
+            $valid_interval = false;
+            if ($o['interval']) {
+                $f1 = "start_{$f}";
+                $f2 = "end_{$f}";
+                if ((isset($query[$f1]) && !empty($query[$f1]))
+                    || (isset($query[$f2]) && !empty($query[$f2]))) {
+                        $valid_interval = true;
+                    }
+            }
+
+            if ((isset($query[$f]) && !empty($query[$f])) || $valid_interval) {
+
+                $fieldName = null;
                 if ($this->hasField($f)) {
-                    // check for _id stuff
                     $fieldName = $f;
-                } else {
+                } elseif (!$o['interval']) {
                     $fieldName = "{$f}_id";
                     if (!$this->hasField($fieldName)) {
                         $fieldName = null;
                     }
                 }
+
                 if ($fieldName) {
                     $options = Hash::merge(array(
                         'type' => 'text',
+                        'interval' => false,
                         'condition' => ''
                     ), $o);
+
+                    if ($options['interval']) {
+                        $options['condition'] = 'interval';
+                    }
 
                     // build query fiters
                     switch ($options['condition']) {
@@ -90,6 +108,26 @@ class CommonAppModel extends AppModel {
                             $conditions[] = array(
                                 "{$this->alias}.{$fieldName} LIKE" => "%{$query[$f]}%"
                             );
+                            break;
+                        case 'interval':
+
+                            if (!empty($query[$f1]) && !empty($query[$f2])) {
+                                $conditions[] = array(
+                                    "{$this->alias}.{$fieldName} BETWEEN ? AND ?" => array(
+                                        $query[$f1],
+                                        $query[$f2],
+                                    ),
+                                );
+                            } elseif (!empty($query[$f1])) {
+                                $conditions[] = array(
+                                    "{$this->alias}.{$fieldName} >= " => $query[$f1]
+                                );
+                            } else {
+                                $conditions[] = array(
+                                    "{$this->alias}.{$fieldName} <= " => $query[$f2]
+                                );
+                            }
+
                             break;
                         default:
                             $conditions[] = array(
