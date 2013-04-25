@@ -169,7 +169,8 @@ span.to-list-elem {
     padding: 5px 0;
 }
 .common-filter div.input label {
-    display: inline-block;
+    float: left;
+    margin-top: 8px;
 }
 .common-filter div.input select,
 .common-filter div.input input[type="text"] {
