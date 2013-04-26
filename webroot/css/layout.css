@@ -897,9 +897,12 @@ form .submit {
 }
 
 .submit_link {
-    float: right;
+    float: left;
     margin-right: 3%;
-    padding: 5px 0;
+    padding: 5px;
+}
+.submit_link .submit {
+    float: right;
 }
 
 .submit_link select {

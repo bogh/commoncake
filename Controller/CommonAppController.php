@@ -65,6 +65,7 @@ class CommonAppController extends AppController {
      * List model
      */
     protected function _index($options = array()) {
+        $this->_bulk();
         $_defaults = array(
             'conditions' => array(),
             'limit' => 50
@@ -81,6 +82,40 @@ class CommonAppController extends AppController {
         $this->Paginator->settings[$modelClass] = $options;
 
         $this->set($variable, $this->Paginator->paginate($modelClass));
+    }
+
+    /**
+     * Handle bulk operations
+     */
+    protected function _bulk() {
+        $modelClass = $this->modelClass;
+        $data = $this->request->data;
+
+        if (!$this->request->is('post') || !isset($data[$modelClass])) {
+            return;
+        }
+        if (!isset($data['action'])) {
+            return;
+        }
+
+        $action = strtolower($data['action']);
+        $data = $data[$modelClass];
+
+        if (!isset($data['id']) || !method_exists($this->$modelClass, 'actions')) {
+            return;
+        }
+
+        $ids = $data['id'];
+        if (empty($ids)) {
+            return;
+        }
+
+        $result = $this->$modelClass->actions($action, $ids);
+        if ($result === false) {
+            $this->_error('There has been an error applying the action. Please try again!');
+        } elseif (is_string($result)) {
+            $this->_success($result);
+        }
     }
 
     /**

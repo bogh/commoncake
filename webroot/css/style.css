@@ -186,12 +186,15 @@ button[rel~="filter"] {
 .pagination {
     margin: 0;
 }
+.pagination ul {
+    float: right;
+}
 .pagination ul>li>a {
     padding: 6px 12px;
     border: none;
-    background: #fff;
+    background: none;
     border-right: 1px solid #ddd;
 }
 .pagination .current a {
-    background: none;
+    background: #fff;
 }
