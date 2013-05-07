@@ -88,14 +88,14 @@ header#header h2.section_title {
 
 .btn_view_site {
 float: left;
-width: 9%;
+/*width: 9%;*/
 }
 
 .btn_view_site a {
-    display: block;
+    display: inline-block;
     margin-top: 2px;
     width: 91px;
-    height: 27px;
+    /*height: 27px;*/
     background: url(../img/btn_view_site.png) no-repeat;
     color: #fff;
     text-align: center;
