@@ -511,4 +511,27 @@ class CommonHelper extends AppHelper {
         $this->Html->script('/common/js/jquery-ui.min', array('inline' => false));
     }
 
+    /**
+     * Auto includes elements
+     * If out is set will append to it and return it, otherwise will return the
+     * output of the elements
+     */
+    public function autoInclude($out = null) {
+        $c = '';
+        if (isset($this->_View->viewVars['autoInclude'])) {
+            $autoInclude = (array) $this->_View->viewVars['autoInclude'];
+            foreach ($autoInclude as $element) {
+                $c .= $this->_View->element($element);
+            }
+        }
+        if ($out === null) {
+            return $c;
+        } elseif (is_string($out)) {
+            return $out . $c;
+        } elseif (is_array($out)) {
+            $out[] = $c;
+            return $out;
+        }
+    }
+
 }

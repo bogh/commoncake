@@ -8,3 +8,4 @@
         echo $this->fetch('content');
     ?>
 </section>
+<?php echo $this->Common->autoInclude(); ?>

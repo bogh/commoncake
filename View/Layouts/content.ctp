@@ -9,7 +9,7 @@
                 break;
         }
     } else {
-        echo implode(array(
+        $out = array(
 
             $this->fetch('css'),
 
@@ -21,6 +21,8 @@
             $this->Html->scriptBlock(
                 "window.common.title('" . $this->fetch('title') . "');"
             )
-        ));
+        );
+        $out = $this->Common->autoInclude($out);
+        echo implode($out);
     }
 
