@@ -159,7 +159,7 @@ class CommonAppController extends AppController {
         $options = Hash::merge($_defaults, $options);
         $modelClass = $this->modelClass;
         if ($this->$modelClass->delete($id)) {
-            $this->_success("{$modelClass} has been deleted!");
+            $this->_info("{$modelClass} has been deleted!");
         } else {
             $this->_error("There has been an error trying to delete the {$modelClass}!");
         }
@@ -179,6 +179,12 @@ class CommonAppController extends AppController {
     }
 
     protected function _info($message) {
+        $this->Session->setFlash($message, 'Common.flash', array(
+            'class' => 'alert_info'
+        ));
+    }
+
+    protected function _warning($message) {
         $this->Session->setFlash($message, 'Common.flash', array(
             'class' => 'alert_warning'
         ));
