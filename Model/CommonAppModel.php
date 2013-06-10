@@ -70,7 +70,7 @@ class CommonAppModel extends AppModel {
         foreach ($modelFilters as $f => $o) {
 
             $valid_interval = false;
-            if ($o['interval']) {
+            if (isset($o['interval']) && $o['interval']) {
                 $f1 = "start_{$f}";
                 $f2 = "end_{$f}";
                 if ((isset($query[$f1]) && !empty($query[$f1]))
@@ -84,7 +84,7 @@ class CommonAppModel extends AppModel {
                 $fieldName = null;
                 if ($this->hasField($f)) {
                     $fieldName = $f;
-                } elseif (!$o['interval']) {
+                } elseif (!isset($o['interval']) || !$o['interval']) {
                     $fieldName = "{$f}_id";
                     if (!$this->hasField($fieldName)) {
                         $fieldName = null;
