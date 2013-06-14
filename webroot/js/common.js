@@ -73,7 +73,8 @@ jQuery(function ($) {
         close: function (delay) {
             delay = delay || 0;
             _.delay(function () {
-                $('.modal[aria-hidden=false]').modal('hide');
+                $('.modal[aria-hidden=false]')
+                    .modal('hide');
             }, delay);
         }
     };
@@ -361,10 +362,19 @@ jQuery(function ($) {
                 }
 
                 $this.button('reset');
+
                 $modal.on('hidden', function () {
                     $modal.remove();
                 });
-                $modal.modal();
+
+                $modal.modal()
+
+                $modal.on('hide', function () {
+                    $('body').css('overflow', 'auto');
+                });
+                $modal.on('show', function () {
+                    $('body').css('overflow', 'hidden');
+                });
 
             }
         });

@@ -198,3 +198,6 @@ button[rel~="filter"] {
 .pagination .current a {
     background: #fff;
 }
+.modal .modal-body textarea {
+    height: 70px;
+}
