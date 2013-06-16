@@ -70,13 +70,18 @@ class CommonAppModel extends AppModel {
         foreach ($modelFilters as $f => $o) {
 
             $valid_interval = false;
-            if (isset($o['interval']) && $o['interval']) {
+            if (
+                (isset($o['interval']) && $o['interval'])) {
                 $f1 = "start_{$f}";
                 $f2 = "end_{$f}";
                 if ((isset($query[$f1]) && !empty($query[$f1]))
                     || (isset($query[$f2]) && !empty($query[$f2]))) {
-                        $valid_interval = true;
-                    }
+                    $valid_interval = true;
+                }
+                if (isset($o['date_interval']) && $o['date_interval'] &&
+                    $query[$f1] == $query[$f2]) {
+                    $query[$f2] = date(MYSQL_DATETIME, strtotime('+1 day', strtotime($query[$f2])));
+                }
             }
 
             if ((isset($query[$f]) && !empty($query[$f])) || $valid_interval) {
@@ -90,15 +95,20 @@ class CommonAppModel extends AppModel {
                         $fieldName = null;
                     }
                 }
+                if (isset($o['field'])) {
+                    $fieldName = true;
+                }
 
                 if ($fieldName) {
                     $options = Hash::merge(array(
                         'type' => 'text',
                         'interval' => false,
-                        'condition' => ''
+                        'date_interval' => false,
+                        'condition' => '',
+                        'field' => "{$this->alias}.{$fieldName}"
                     ), $o);
 
-                    if ($options['interval']) {
+                    if ($options['interval'] || $options['date_interval']) {
                         $options['condition'] = 'interval';
                     }
 
@@ -106,32 +116,31 @@ class CommonAppModel extends AppModel {
                     switch ($options['condition']) {
                         case 'like':
                             $conditions[] = array(
-                                "{$this->alias}.{$fieldName} LIKE" => "%{$query[$f]}%"
+                                "{$options['field']} LIKE" => "%{$query[$f]}%"
                             );
                             break;
                         case 'interval':
-
                             if (!empty($query[$f1]) && !empty($query[$f2])) {
                                 $conditions[] = array(
-                                    "{$this->alias}.{$fieldName} BETWEEN ? AND ?" => array(
+                                    "{$options['field']} BETWEEN ? AND ?" => array(
                                         $query[$f1],
                                         $query[$f2],
                                     ),
                                 );
                             } elseif (!empty($query[$f1])) {
                                 $conditions[] = array(
-                                    "{$this->alias}.{$fieldName} >= " => $query[$f1]
+                                    "{$options['field']} >= " => $query[$f1]
                                 );
                             } else {
                                 $conditions[] = array(
-                                    "{$this->alias}.{$fieldName} <= " => $query[$f2]
+                                    "{$options['field']} <= " => $query[$f2]
                                 );
                             }
 
                             break;
                         default:
                             $conditions[] = array(
-                                "{$this->alias}.{$fieldName} {$options['condition']}" => $query[$f]
+                                "{$options['field']} {$options['condition']}" => $query[$f]
                             );
                             break;
                     }

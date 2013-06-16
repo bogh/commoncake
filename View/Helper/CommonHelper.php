@@ -389,6 +389,7 @@ class CommonHelper extends AppHelper {
             $options = Hash::merge(array(
                 'type' => 'text',
                 'interval' => false,
+                'date_interval' => false,
                 'datepicker' => false,
             ), $modelFilters[$field]);
 
