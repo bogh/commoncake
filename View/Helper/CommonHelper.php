@@ -135,6 +135,7 @@ class CommonHelper extends AppHelper {
     public function key($title, $key) {
         $this->_paginator();
         $sortKey = $this->Paginator->sortKey();
+        $title = __($title);
 
         if ($key == $sortKey) {
             $sortDir = $this->Paginator->sortDir();
@@ -176,7 +177,7 @@ class CommonHelper extends AppHelper {
             if (isset($options['options'])) {
                 $linkOptions = $options['options'];
             }
-            $linkOptions['title'] = $title;
+            $linkOptions['title'] = __($title);
 
             if (isset($options['confirm'])) {
                 $linkOptions['data-confirm'] = $options['confirm'];
@@ -239,7 +240,7 @@ class CommonHelper extends AppHelper {
                 // icon
                 if (isset($options['icon']) && $options['icon']) {
                     $class = "icon icon-{$options['icon']}";
-                    $title = "<i class=\"{$class}\"></i> " . $title;
+                    $title = "<i class=\"{$class}\"></i> " . __($title);
                 }
                 if (isset($options['options'])) {
                     $linkOptions = Hash::merge($linkOptions, $options['options']);
@@ -281,7 +282,7 @@ class CommonHelper extends AppHelper {
         }
 
         $button = $this->Form->button(
-            '<i class="icon-plus icon-white"></i> ' . $title,
+            '<i class="icon-plus icon-white"></i> ' . __($title),
             $btnAttrs
         );
 

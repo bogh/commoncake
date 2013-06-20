@@ -13,7 +13,7 @@
         <div class="btn_view_site">
         <?php
             if (!isset($viewSite)) {
-                $viewSite = array('View Site', '/');
+                $viewSite = array(__('View Site'), '/');
             }
             echo $this->Html->link($viewSite[0], $viewSite[1], array(
                 'target' => '_blank'
