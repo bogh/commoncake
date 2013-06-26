@@ -231,7 +231,7 @@ class CommonHelper extends AppHelper {
                 continue;
             }
 
-            $out[] = $this->Html->tag('h3', $title);
+            $out[] = $this->Html->tag('h3', __($title));
 
             $list = array();
             foreach ($links as $title => $options) {
@@ -438,7 +438,7 @@ class CommonHelper extends AppHelper {
         $class = 'common-filter';
         if (!isset($this->request->query['filter'])) {
             $class = 'common-filter hide';
-            $link = $this->Html->tag('button', '<i class="icon-search icon-white"></i> Filter', array(
+            $link = $this->Html->tag('button', '<i class="icon-search icon-white"></i> ' . __('Filter'), array(
                 'rel' => 'filter',
                 'data-filter' => "#{$modelClass}-filter",
                 'class' => 'toggle-filter btn btn-small btn-info',
@@ -455,9 +455,9 @@ class CommonHelper extends AppHelper {
 
             $this->Form->inputs($inputs),
 
-            $this->Form->submit('Filter', array('class' => 'btn btn-info')),
+            $this->Form->submit(__('Filter'), array('class' => 'btn btn-info')),
 
-            $this->Html->link('Cancel', array(
+            $this->Html->link(__('Cancel'), array(
                 'controller' => $this->params['controller'],
                 'action' => $this->params['action']
             ), array('class' => 'btn')),
@@ -472,7 +472,7 @@ class CommonHelper extends AppHelper {
         $actions = (array) $actions;
         $bulk = array();
         foreach ($actions as $a) {
-            $bulk[] = $this->Form->submit($a, array(
+            $bulk[] = $this->Form->submit(__($a), array(
                 'name' => 'action',
                 'div' => false,
                 'class' => 'btn btn-mini btn-primary'

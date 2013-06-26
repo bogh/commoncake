@@ -19,7 +19,7 @@
     </div>
 
     <div class="modal-footer">
-      <a class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+      <a class="btn" data-dismiss="modal" aria-hidden="true"><?php echo __('Close') ?></a>
       <?php echo $this->fetch('buttons'); ?>
     </div>
 
