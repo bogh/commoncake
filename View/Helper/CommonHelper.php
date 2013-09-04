@@ -16,13 +16,30 @@ class CommonHelper extends AppHelper {
         'Time',
         'Js',
         'Paginator',
-        'Form'
+        'Form',
+        'Upload.Upload'
     );
 
     public function afterRender($viewFile) {
         if ($this->request->is('backend')) {
             $layout = $this->_View->layout;
             $this->_View->layout = "Common.{$layout}";
+
+            if (!$this->request->is('ajax')) {
+                // Load extra assets
+                $assets = '';
+                if (isset($this->settings['css'])) {
+                    $assets .= $this->Html->css((array) $this->settings['css']);
+                }
+                if (isset($this->settings['script'])) {
+                    $assets .= $this->Html->script((array) $this->settings['script']);
+                }
+
+                if (isset($this->settings['ui']) && $this->settings['ui']) {
+                    $this->jUi();
+                }
+                $this->_View->set(compact('assets'));
+            }
         }
     }
 
@@ -63,13 +80,8 @@ class CommonHelper extends AppHelper {
      * @param mixed $value
      * @access public
      */
-    public function date($value = null, $split = false) {
-        if ($split) {
-            return $value ? nl2br($this->Time->format(ADMIN_DATE_SPLIT, $value)) : 'N/A';
-        } else {
-            return $value ? $this->Time->format(ADMIN_DATE, $value) : 'N/A';
-        }
-
+    public function date($value = null, $format = ADMIN_DATE) {
+        return $value ? $this->Time->format(ADMIN_DATE, $value) : 'N/A';
     }
 
     /**
@@ -84,7 +96,7 @@ class CommonHelper extends AppHelper {
             $id
         );
         $image = '<i class="icon-edit"></i> Edit';
-        return $this->Html->link($image, $url, array('escape' => false));
+        return $this->link($image, $url, array('escape' => false));
     }
 
     /**
@@ -99,7 +111,7 @@ class CommonHelper extends AppHelper {
             $id
         );
         $image .= ' Details';
-        return $this->Html->link($image, $url, array('escape' => false));
+        return $this->link($image, $url, array('escape' => false));
     }
 
     /**
@@ -115,7 +127,7 @@ class CommonHelper extends AppHelper {
         );
         $confirm = 'Are you sure you want to delete the selected record ?';
         $image = '<i class="icon-remove"></i> Delete';
-        return $this->Html->link($image, $url, array(
+        return $this->link($image, $url, array(
             'escape' => false
         ), $confirm);
     }
@@ -123,6 +135,7 @@ class CommonHelper extends AppHelper {
     public function key($title, $key) {
         $this->_paginator();
         $sortKey = $this->Paginator->sortKey();
+        $title = __($title);
 
         if ($key == $sortKey) {
             $sortDir = $this->Paginator->sortDir();
@@ -135,7 +148,10 @@ class CommonHelper extends AppHelper {
             $title .= $this->Paginator->link(
                 '<i class="icon-ban-circle"></i>',
                 array('order' => false),
-                array('escape' => false)
+                array(
+                    'escape' => false,
+                    'rel' => 'content'
+                )
             );
         }
 
@@ -154,18 +170,22 @@ class CommonHelper extends AppHelper {
     public function actions($actions) {
         $out = array();
         $defaults = array(
-            'escape' => false,
-            'rel' => 'tooltip'
+            'escape' => false
         );
         foreach ($actions as $title => $options) {
             $linkOptions = array();
             if (isset($options['options'])) {
                 $linkOptions = $options['options'];
             }
-            $linkOptions['title'] = $title;
+            $linkOptions['title'] = __($title);
 
             if (isset($options['confirm'])) {
                 $linkOptions['data-confirm'] = $options['confirm'];
+                $linkOptions['rel'] = false;
+            }
+
+            if (isset($options['modal']) && $options['modal']) {
+                $linkOptions['rel'] = 'modal';
             }
 
             $link = '';
@@ -180,7 +200,7 @@ class CommonHelper extends AppHelper {
                 ));
             }
 
-            $out[] = $this->Html->link(
+            $out[] = $this->link(
                 $link,
                 $options['link'],
                 Hash::merge($defaults, $linkOptions)
@@ -201,54 +221,52 @@ class CommonHelper extends AppHelper {
         }
         $out = array();
 
+        if (isset($menu['elements'])) {
+            $elements = $menu['elements'];
+            unset($menu['elements']);
+        }
+
         foreach ($menu as $title => $links) {
             if (!$links) {
                 continue;
             }
 
-            $out[] = $this->Html->tag('h3', $title);
-            $linkOptions = array('escape' => false);
+            $out[] = $this->Html->tag('h3', __($title));
 
             $list = array();
             foreach ($links as $title => $options) {
+                $linkOptions = array('escape' => false);
+
                 // icon
                 if (isset($options['icon']) && $options['icon']) {
                     $class = "icon icon-{$options['icon']}";
-                    $title = "<i class=\"{$class}\"></i> " . $title;
+                    $title = "<i class=\"{$class}\"></i> " . __($title);
+                }
+                if (isset($options['options'])) {
+                    $linkOptions = Hash::merge($linkOptions, $options['options']);
                 }
 
                 if ($this->isActive($options['link'])) {
                     $linkOptions['class'] = 'active';
                 }
 
-                $list[] = $this->Html->link($title, $options['link'], $linkOptions);
+                $list[] = $this->link($title, $options['link'], $linkOptions);
             }
             $out[] = $this->Html->nestedList($list);
         }
 
-        return implode($out);
-    }
-
-    public function isActive($link) {
-        $params = $this->request->params;
-        $is = true;
-
-        foreach ($link as $k => $v) {
-            if ($k == 'action' && isset($params['prefix'])) {
-                $v = "{$params['prefix']}_{$v}";
-            }
-            if (!in_array($k, $params)) {
-                $is = false;
-            } elseif ($params[$k] != $v) {
-                $is = false;
-            }
-
-            if (!$is) {
-                break;
+        $before = '';
+        if (isset($elements)) {
+            foreach ($elements as $e) {
+                $before .= $this->_View->element($e);
             }
         }
 
-        return $is;
+        return $before . implode($out);
+    }
+
+    public function isActive($link) {
+        return $this->url($link) === $this->request->here;
     }
 
     public function addLink($title = 'Add', $attrs = array(), $link = true) {
@@ -264,7 +282,7 @@ class CommonHelper extends AppHelper {
         }
 
         $button = $this->Form->button(
-            '<i class="icon-plus icon-white"></i> ' . $title,
+            '<i class="icon-plus icon-white"></i> ' . __($title),
             $btnAttrs
         );
 
@@ -272,7 +290,7 @@ class CommonHelper extends AppHelper {
             return $button;
         }
 
-        return $this->Html->link(
+        return $this->link(
             $button,
             $link,
             array('escape' => false) + $attrs
@@ -311,7 +329,7 @@ class CommonHelper extends AppHelper {
     public function help($text, $trigger = 'click') {
         $tooltip = $this->Html->div('helper-tooltip', implode(array(
             $text,
-            $this->Html->div('left-arrow', null)
+            $this->Html->div('left-arrow', '')
         )));
 
         return $this->Html->tag('span', $tooltip, array(
@@ -329,6 +347,193 @@ class CommonHelper extends AppHelper {
             return $this->Html->tag('span', $alt, array('class' => 'helptext'));
         }
         return '';
+    }
+
+    /**
+     * Create a link that is executed through ajax and loaded in content
+     */
+    public function link($title, $url = null, $options = array(), $confirmMessage = false) {
+        if (!isset($options['rel'])) {
+            $options['rel'] = 'content';
+        }
+        return $this->Html->link($title, $url, $options, $confirmMessage);
+    }
+
+    public function filter($modelClass, $fields = array()) {
+        App::uses($modelClass, 'Model');
+        if (!property_exists($modelClass, 'filters')) {
+            return false;
+        }
+
+        $inputs = array(
+            'filter' => array(
+                'type' => 'hidden',
+                'value' => 1
+            ),
+            'fieldset' => false
+        );
+
+        if (!$fields) {
+            $modelFilters = $modelClass::$filters;
+            foreach ($modelFilters as $k => $v) {
+                if (is_numeric($k)) {
+                    $fields[] = $v;
+                    unset($modelFilters[$k]);
+                    $modelFilters[$v] = array();
+                } else {
+                    $fields[] = $k;
+                }
+            }
+        }
+
+        foreach ($fields as $field) {
+            $options = Hash::merge(array(
+                'type' => 'text',
+                'interval' => false,
+                'date_interval' => false,
+                'datepicker' => false,
+            ), $modelFilters[$field]);
+
+            switch ($options['type']) {
+                case 'select':
+                    $var = Inflector::pluralize(Inflector::variable($field));
+                    if (!isset($this->_View->viewVars[$var])) {
+                        $Model = ClassRegistry::init(Inflector::classify($var));
+                        if ($Model) {
+                            $inputs[$field]['options'] = $Model->find('list');
+                        }
+                    }
+                    $inputs[$field]['empty'] = '';
+                    break;
+            }
+
+            $q = $this->request->query;
+
+            if (!$options['interval']) {
+                $inputs[$field]['type'] = $options['type'];
+                $inputs[$field]['value'] = (isset($q[$field]) ? $q[$field] : '');
+
+                if ($options['datepicker']) {
+                    $inputs[$field]['div'] = 'input datepicker';
+                }
+
+            } else {
+                $f1 = "start_{$field}";
+                $f2 = "end_{$field}";
+
+                $inputs[$f2]['type'] = $inputs[$f1]['type'] = $options['type'];
+
+                $inputs[$f1]['value'] = (isset($q[$f1]) ? $q[$f1] : '');
+                $inputs[$f2]['value'] = (isset($q[$f2]) ? $q[$f2] : '');
+
+                if ($options['datepicker']) {
+                    $inputs[$f1]['div'] = $inputs[$f2]['div'] =  'input datepicker';
+                }
+
+            }
+
+        }
+
+        $link = '';
+        $class = 'common-filter';
+        if (!isset($this->request->query['filter'])) {
+            $class = 'common-filter hide';
+            $link = $this->Html->tag('button', '<i class="icon-search icon-white"></i> ' . __('Filter'), array(
+                'rel' => 'filter',
+                'data-filter' => "#{$modelClass}-filter",
+                'class' => 'toggle-filter btn btn-small btn-info',
+                'escape' => false
+            ));
+        }
+
+        $out = $link . $this->Html->div($class, implode(array(
+            $this->Form->create(array(
+                'type' => 'get',
+                'novalidate' => true,
+                'inputDefaults' => array('required' => false )
+            )),
+
+            $this->Form->inputs($inputs),
+
+            $this->Form->submit(__('Filter'), array('class' => 'btn btn-info')),
+
+            $this->Html->link(__('Cancel'), array(
+                'controller' => $this->params['controller'],
+                'action' => $this->params['action']
+            ), array('class' => 'btn')),
+
+            $this->Form->end()
+        )), array('id' => "{$modelClass}-filter"));
+
+        return $out;
+    }
+
+    public function pagination($actions = array()) {
+        $actions = (array) $actions;
+        $bulk = array();
+        foreach ($actions as $a) {
+            $bulk[] = $this->Form->submit(__($a), array(
+                'name' => 'action',
+                'div' => false,
+                'class' => 'btn btn-mini btn-primary'
+            ));
+        }
+
+        $numbers = $this->Paginator->numbers(array(
+            'tag' => 'li',
+            'separator' => false,
+            'currentTag' => 'a'
+        ));
+
+        return $this->Html->tag('footer', implode(array(
+            $this->Html->div('submit_link', implode($bulk)),
+            $this->Html->tag('ul', $numbers)
+        )), array(
+            'class' => 'pagination'
+        ));
+    }
+
+    /**
+     * Outputs a checkbox for use in index pages for bulk updates
+     */
+    public function actionCheck($value) {
+        return $this->Form->checkbox('id.', array(
+            'value' => $value,
+            'hiddenField' => false
+        ));
+    }
+
+    /**
+     * Include jquery ui in your theme
+     */
+    public function jUi() {
+        $this->Html->css('/common/css/smoothness/jquery-ui.min', null, array(
+            'inline' => false
+        ));
+        $this->Html->script('/common/js/jquery-ui.min', array('inline' => false));
+    }
+
+    /**
+     * Auto includes elements
+     * If out is set will append to it and return it, otherwise will return the
+     * output of the elements
+     */
+    public function autoInclude($out = null) {
+        $c = '';
+        if (isset($this->_View->viewVars['autoInclude'])) {
+            $autoInclude = (array) $this->_View->viewVars['autoInclude'];
+            foreach ($autoInclude as $element) {
+                $c .= $this->_View->element($element);
+            }
+        }
+        if ($out === null) {
+            return $c;
+        } elseif (is_string($out)) {
+            return $out . $c;
+        } elseif (is_array($out)) {
+            $out[] = $c;
+            return $out;
+        }
     }
 
 }

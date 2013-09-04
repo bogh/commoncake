@@ -3,6 +3,7 @@
 <head>
   <title>
     <?php echo $this->fetch('title'); ?>
+    - <?php echo Configure::read('Site.title'); ?>
  </title>
 
   <?php
@@ -11,21 +12,27 @@
     echo $this->Html->css(array(
       '/common/css/bootstrap.min',
       '/common/css/layout',
-      '/common/css/style',
-      '/common/css/datepicker',
+      '/common/css/style'
     ));
 
+    echo $this->fetch('css');
+
+    echo $this->Html->script('/common/js/jquery.min');
+
     echo $this->Html->script(array(
-      '/common/js/jquery.min',
       '/common/js/lodash',
       '/common/js/bootstrap.min',
-      '/common/js/bootstrap-datepicker',
-      '/common/js/common',
+      '/common/js/common'
     ));
+
+    echo $this->Js->writeBuffer();
 
     echo $this->fetch('script');
 
-    echo $this->Js->writeBuffer(array('onDomReady' => false));
+    if (isset($assets)) {
+      echo $assets;
+    }
+
   ?>
 </head>
 <body class="<?php echo $this->layout; ?>-layout">

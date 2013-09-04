@@ -1,25 +1,58 @@
 jQuery(function ($) {
-    //When page loads...
-    $(".tab_content").hide(); //Hide all content
-    $("ul.tabs li:first").addClass("active").show(); //Activate first tab
-    $(".tab_content:first").show(); //Show first tab content
-
     //On Click Event
-    $("ul.tabs li").click(function() {
-        $("ul.tabs li").removeClass("active"); //Remove any "active" class
-        $(this).addClass("active"); //Add "active" class to selected tab
-        $(".tab_content").hide(); //Hide all tab content
 
-        var activeTab = $(this).find("a").attr("href"); //Find the href attribute value to identify the active tab + content
-        $(activeTab).fadeIn(); //Fade in the active ID content
+    $(document).on('click', '[rel~=filter]', function () {
+        var $link = $(this);
+        $link.hide();
+        $($link.data('filter')).show();
+    });
 
-        return false;
+    $(document).on('click', '[rel~=scroll-to-top]', function () {
+        $('body').animate({
+            scrollTop: 0
+        }, 100);
+    });
+
+    $(document).on('scroll', function () {
+        var top = $(this).scrollTop();
+        if (top) {
+            $("#header #can-scroll").fadeIn(100);
+        } else {
+            $("#header #can-scroll").fadeOut(100);
+        }
+    });
+
+    $(document).on('click', 'ul.tabs li', function (e) {
+        $('ul.tabs li').removeClass('active');
+        $(this).addClass('active');
+        $('.tab_content').hide();
+
+        var activeTab = $(this).find('a').attr('href');
+        $(activeTab).fadeIn();
     });
 });
 
 jQuery(function ($) {
 
-    window.common = {};
+    window.common = {
+
+        title: function (t) {
+            document.title = t;
+            $('h2.section_title').html(t);
+        },
+
+        datepicker: function (options) {
+            // Hack, remove current datepicker cause the ajax content doesn't bind to it
+            // for some reason
+            options = options || {};
+            $('#ui-datepicker-div').remove();
+            options = _.defaults(options, {
+                dateFormat: 'yy-mm-dd'
+            });
+
+            $('.datepicker input, input.datepicker').datepicker(options);
+        }
+    };
 
     $.ajaxSetup({
         beforeSend: function (jqXHR, settings) {
@@ -33,7 +66,17 @@ jQuery(function ($) {
         t = t || 0;
         _.delay(function () {
             window.location.reload(true);
-        }, t * 1000);
+        }, t);
+    };
+
+    window.common.modal = {
+        close: function (delay) {
+            delay = delay || 0;
+            _.delay(function () {
+                $('.modal[aria-hidden=false]')
+                    .modal('hide');
+            }, delay);
+        }
     };
 
     $('[rel~=tooltip]').tooltip();
@@ -126,14 +169,11 @@ jQuery(function ($) {
         init: function () {
             var self = this;
 
-            $(document).on(
-                'click',
-                'a:not([rel=modal], [rel=direct], [data-confirm])',
-                function (e) {
-                    e.preventDefault();
-                    self.load($(this).attr('href'));
-                }
-            );
+            $(document).on('click', 'a[rel~=content]', function (e) {
+                e.preventDefault();
+                self.options.$elem = $(this);
+                self.load($(this).attr('href'));
+            });
         },
 
         load: function (url, push) {
@@ -167,6 +207,9 @@ jQuery(function ($) {
             // show loader
             jqXHR.setRequestHeader('X-LAYOUT', 'content');
             this.loader.show();
+            $('body').animate({
+                scrollTop: 0
+            }, 100);
         },
 
         error: function (e, jqXHR, options, err) {
@@ -175,6 +218,7 @@ jQuery(function ($) {
                 .addClass('alert_error')
                 .html('There was an error proccessing the request.')
                 .prependTo($('#main'));
+            this.loader.hide();
         },
 
         success: function (res, req, options) {
@@ -197,6 +241,12 @@ jQuery(function ($) {
         },
 
         complete: function () {
+            // set active link
+            $('#sidebar li a.active').removeClass('active');
+            if (this.options.$elem) {
+                this.options.$elem.addClass('active');
+            }
+
             this.clear();
         },
 
@@ -257,8 +307,8 @@ jQuery(function ($) {
 
     // coaie nu comenta ca nu am facut eu codu asta :D e luat de la un fraier, easy shit
     $(document).on('click', 'a[data-confirm]', function (e) {
-        var href = $(this).attr('href');
         e.preventDefault();
+        var href = $(this).attr('href');
         if (!$('#dataConfirmModal').length) {
             $('body').append('<div id="dataConfirmModal" class="modal fade fast" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div>');
         }
@@ -272,12 +322,6 @@ jQuery(function ($) {
         return false;
     });
 
-    $(document).on('focus', '.input.datepicker-h input[type="text"]', function () {
-        $(this).datepicker({
-            format: 'yyyy-mm-dd'
-        });
-    });
-
     // togglers
     $('[rel~=toggler]').click(function () {
         var $this = $(this),
@@ -286,7 +330,7 @@ jQuery(function ($) {
     });
 
     // modals
-    $(document).on('click', 'a[rel=modal]', function (e) {
+    $(document).on('click', 'a[rel~=modal]', function (e) {
         e.preventDefault();
 
         var $this = $(this);
@@ -298,7 +342,9 @@ jQuery(function ($) {
             type: 'GET',
             modal: true,
             success: function (data) {
-                var $modal = $(data),
+                $('body').append(data);
+
+                var $modal = $('body > .modal').last(),
                     wW = $(window).width(),
                     mW = $modal.data('width');
 
@@ -316,9 +362,23 @@ jQuery(function ($) {
                 }
 
                 $this.button('reset');
-                $modal.modal();
+
+                $modal.on('hidden', function () {
+                    $modal.remove();
+                });
+
+                $modal.modal()
+
+                $modal.on('hide', function () {
+                    $('body').css('overflow', 'auto');
+                });
+                $modal.on('show', function () {
+                    $('body').css('overflow', 'hidden');
+                });
+
             }
         });
+        return false;
     });
 
     // General money input
@@ -332,38 +392,76 @@ jQuery(function ($) {
     $(document).on('submit', 'form[rel~=ajax]', function (e) {
         e.preventDefault();
 
+        var $b = $(this).find('input[type=submit]');
+        if (!$b.length) {
+            $b = $(this).find('button:last');
+        }
+
         var $this = $(this),
-            options = {
+
+            options = $.extend({
                 holder: 'modal',
                 active: false
-            },
+            }, $this.data()),
+
             ajax = {
                 url: $this.attr('action'),
                 type: $this.attr('method'),
-                data: $this.serializeArray()
+                data: $this.serializeArray(),
+                beforeSend: function () {
+                    $this.data('active', true);
+
+                    if ($this.data('loader') !== false) {
+
+                        if (!$b.length) {
+                            return;
+                        }
+                        $b.attr('disabled', true);
+                        if ($b.prop("tagName") == "INPUT") {
+                            $b.data('old-text', $b.val()).val('Loading...');
+                        } else {
+                            $b.data('old-text', $b.html()).html('Loading...');
+                        }
+
+                    }
+                },
+                success: function (res) {
+                    var $holder;
+                    switch (options.holder) {
+                        case 'modal':
+                            $holder = $this.find('.modal-body');
+                            break;
+                        default:
+                            $holder = $(options.holder);
+                            break;
+                    }
+
+                    if ($holder) {
+                        $holder.html(res);
+                    }
+                },
+                error: function () {
+                    $this.data('active', false);
+                },
+                complete: function () {
+                    $this.data('active', false);
+
+                    if (!$b.length) {
+                        return;
+                    }
+                    $b.attr('disabled', false);
+                    if ($b.prop("tagName") == "INPUT") {
+                        $b.val($b.data('old-text'));
+                    } else {
+                        $b.html($b.data('old-text'));
+                    }
+
+                }
             };
 
-        options = $.extend(options, $this.data());
         if (options.active) {
             return; // means form is already in execution
         }
-
-        ajax.success = function (res) {
-            $this.data('active', false);
-
-            var $holder;
-            switch (options.holder) {
-                case 'modal':
-                    $holder = $this.find('.modal-body');
-                    break;
-            }
-
-            if ($holder) {
-                $holder.html(res);
-            }
-        };
-
-        $this.data('active', true);
         $.ajax(ajax);
     });
 });

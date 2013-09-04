@@ -4,16 +4,30 @@ App::uses('AppController', 'Controller');
 
 class CommonAppController extends AppController {
 
-    public $helpers = array('Common.Common');
-
     public function beforeFilter() {
+        $this->_detectors();
+
         parent::beforeFilter();
 
         $this->_prefix();
         $this->_security();
         $this->_auth();
+    }
 
-        $this->_backend();
+    protected function _detectors() {
+        $prefixes = Configure::read('Common.backend_prefixes', array());
+        $detector = function ($request) use ($prefixes) {
+            if (empty($prefixes)) {
+                return !empty($request->prefix);
+            } else {
+                return in_array($request->prefix, $prefixes);
+            }
+
+            return false;
+        };
+        $this->request->addDetector('backend', array('callback' => $detector));
+
+        $this->request->addDetector('json', array('param' => 'ext', 'value' => 'json'));
     }
 
     /**
@@ -47,36 +61,61 @@ class CommonAppController extends AppController {
         }
     }
 
-    protected function _backend() {
-        $prefixes = array();
-        if (property_exists($this, '_backendPrefixes')) {
-            $prefixes = $this->_backendPrefixes;
-        }
-        $detector = function ($request) use ($prefixes) {
-            if (empty($prefixes)) {
-                return !empty($request->prefix);
-            } else {
-                return in_array($request->prefix, $prefixes);
-            }
-
-            return false;
-        };
-        $this->request->addDetector('backend', array('callback' => $detector));
-    }
-
     /**
      * List model
      */
     protected function _index($options = array()) {
-        $_defaults = array();
+        $this->_bulk();
+        $_defaults = array(
+            'conditions' => array(),
+            'limit' => 50
+        );
         $options = Hash::merge($_defaults, $options);
 
         $modelClass = $this->modelClass;
         $variable = Inflector::variable(Inflector::pluralize($modelClass));
-
+        if (method_exists($this->$modelClass, 'filter') &&
+                isset($this->request->query['filter'])) {
+            $options['conditions'] = Hash::merge($options['conditions'],
+                $this->$modelClass->filter($this->request->query));
+        }
         $this->Paginator->settings[$modelClass] = $options;
 
         $this->set($variable, $this->Paginator->paginate($modelClass));
+    }
+
+    /**
+     * Handle bulk operations
+     */
+    protected function _bulk() {
+        $modelClass = $this->modelClass;
+        $data = $this->request->data;
+
+        if (!$this->request->is('post') || !isset($data[$modelClass])) {
+            return;
+        }
+        if (!isset($data['action'])) {
+            return;
+        }
+
+        $action = strtolower($data['action']);
+        $data = $data[$modelClass];
+
+        if (!isset($data['id']) || !method_exists($this->$modelClass, 'actions')) {
+            return;
+        }
+
+        $ids = $data['id'];
+        if (empty($ids)) {
+            return;
+        }
+
+        $result = $this->$modelClass->actions($action, $ids);
+        if ($result === false) {
+            $this->_error('There has been an error applying the action. Please try again!');
+        } elseif (is_string($result)) {
+            $this->_success($result);
+        }
     }
 
     /**
@@ -91,11 +130,19 @@ class CommonAppController extends AppController {
         $options = Hash::merge($_defaults, $options);
         $modelClass = $this->modelClass;
         $method = $options['method'];
-
         if (!empty($this->request->data)) {
-            if ($this->$modelClass->$method($this->request->data)) {
+            if ($data = $this->$modelClass->$method($this->request->data)) {
                 $this->_success("{$modelClass} has been saved!");
-                $this->redirect($options['redirect']);
+
+                if (isset($options['callback']) && is_callable($options['callback'])) {
+                    $options['callback']($data, $this->$modelClass);
+                }
+
+                if (is_array($options['redirect'])) {
+                    $this->redirect($options['redirect']);
+                } else {
+                    $this->set('redirect', $options['redirect']);
+                }
             } else {
                 $this->_error();
             }
@@ -112,15 +159,14 @@ class CommonAppController extends AppController {
         $options = Hash::merge($_defaults, $options);
         $modelClass = $this->modelClass;
         if ($this->$modelClass->delete($id)) {
-            $this->_success("{$modelClass} has been deleted!");
-            $this->redirect($options['redirect']);
+            $this->_info("{$modelClass} has been deleted!");
         } else {
             $this->_error("There has been an error trying to delete the {$modelClass}!");
         }
+        $this->redirect($options['redirect']);
     }
 
     protected function _view($id, $options = array()) {
-
         $options = Hash::merge(array(
             // 'recursive' => 1
         ), $options);
@@ -133,6 +179,12 @@ class CommonAppController extends AppController {
     }
 
     protected function _info($message) {
+        $this->Session->setFlash($message, 'Common.flash', array(
+            'class' => 'alert_info'
+        ));
+    }
+
+    protected function _warning($message) {
         $this->Session->setFlash($message, 'Common.flash', array(
             'class' => 'alert_warning'
         ));

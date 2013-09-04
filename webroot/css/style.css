@@ -1,6 +1,9 @@
+a.js {
+    cursor: pointer;
+}
 #login {
     width: 300px;
-    margin: 30px auto;
+    margin: 98px auto;
 }
 .icon-blue {
     background-image: url('../img/glyphicons-halflings-blue.png');
@@ -17,13 +20,8 @@
 #secondary_bar .logout {
     float: right;
 }
-form .input.datepicker {
-    width: 265px;
-    float: left;
-    clear: none;
-}
-form .input.datepicker input[type=text] {
-    width: 206px;
+form {
+    margin: 0;
 }
 .simple-layout .flash-message {
     display: block;
@@ -83,11 +81,46 @@ span.help-icon {
 table.edit-list {
     vertical-align: top
 }
+form legend {
+    font-size: 13px;
+    display: inline-block;
+    width: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    padding: 3px 5px;
+    line-height: 13px;
+}
+form .input.radio input[type="radio"] {
+    margin: 0;
+}
+form .input.textarea {
+    /*padding: 10px;*/
+}
+form .input.radio fieldset {
+    padding: 10px;
+    margin-right: 20px;
+}
+form .input .radio-label {
+    font-size: 14px;
+    font-weight: bold;
+}
+form .input.after {
+    display: inline-block;
+}
+form .input.after input {
+    margin-left: 10px;
+}
 form .input span {
     font-weight: bold;
 }
+form .input .info {
+    margin: 0 0 0 20px;
+    font-size: 11px;
+}
 .modal {
-    padding: 10px 0;
+    /*padding: 10px 0;*/
 }
 .modal header {
     margin: 10px 0 5px;
@@ -110,6 +143,7 @@ span.to-list-elem {
     left: 0;
     top: 0;
     text-align: center;
+    cursor: progress;
 }
 .overlay-loader .img {
     width: 70px;
@@ -119,5 +153,51 @@ span.to-list-elem {
     display: inline-block;
 }
 #main {
-    /*position: relative;*/
+    position: relative;
+}
+#sidebar .current-user {
+    padding: 5px 10px;
+    border-bottom: 1px solid #eee;
+    box-shadow: 0 -1px 0 #ccc inset;
+}
+.common-filter {
+    margin:  10px 0 0px 5px;
+}
+.common-filter div.input,
+.common-filter div.submit {
+    display: inline-block;
+    padding: 5px 0;
+}
+.common-filter div.input label {
+    float: left;
+    margin-top: 8px;
+}
+.common-filter div.input select,
+.common-filter div.input input[type="text"] {
+    width: auto;
+    display: inline-block;
+}
+.common-filter input[type="submit"] {
+    margin-right: 10px;
+}
+button[rel~="filter"] {
+    margin-left: 17px;
+}
+.pagination {
+    margin: 0;
+}
+.pagination ul {
+    float: right;
+}
+.pagination ul>li>a {
+    padding: 6px 12px;
+    border: none;
+    background: none;
+    border-right: 1px solid #ddd;
+}
+.pagination .current a {
+    background: #fff;
+}
+.modal .modal-body textarea {
+    height: 70px;
 }

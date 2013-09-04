@@ -1,17 +1,28 @@
 <?php
-    if (isset($refresh)) {
-        echo $this->Html->scriptBlock("window.n.reload();");
+    if (isset($redirect)) {
+        switch ($redirect) {
+            case 'close':
+                echo $this->Html->scriptBlock("window.common.modal.close();");
+                break;
+            case 'refresh':
+                echo $this->Html->scriptBlock("window.common.reload();");
+                break;
+        }
     } else {
-        echo implode(array(
-            $this->fetch('script'),
+        $out = array(
+
             $this->fetch('css'),
 
             $this->Js->writeBuffer(array('onDomReady' => true)),
+            $this->fetch('script'),
 
             $this->fetch('content'),
+
             $this->Html->scriptBlock(
-                "document.title = '" . $this->fetch('title') . "';"
+                "window.common.title('" . $this->fetch('title') . "');"
             )
-        ));
+        );
+        $out = $this->Common->autoInclude($out);
+        echo implode($out);
     }
 
