@@ -507,10 +507,10 @@ class CommonHelper extends AppHelper {
      * Include jquery ui in your theme
      */
     public function jUi() {
-        $this->Html->css('/common/css/smoothness/jquery-ui.min', null, array(
-            'inline' => false
-        ));
-        $this->Html->script('/common/js/jquery-ui.min', array('inline' => false));
+        // $this->Html->css('/common/css/smoothness/jquery-ui.min', null, array(
+        //     'inline' => false
+        // ));
+        // $this->Html->script('/common/js/jquery-ui.min', array('inline' => false));
     }
 
     /**

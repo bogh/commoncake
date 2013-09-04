@@ -11,18 +11,23 @@
 
     echo $this->Html->css(array(
       '/common/css/bootstrap.min',
-      '/common/css/layout',
-      '/common/css/style'
+      '/common/css/bootstrap-responsive.min',
+      '/common/css/font-awesome.min',
+      '/common/css/ace-fonts',
+      '/common/css/ace.min',
+      '/common/css/ace-responsive.min',
+      // '/common/css/ace-skins.min'
     ));
 
     echo $this->fetch('css');
 
-    echo $this->Html->script('/common/js/jquery.min');
+    // echo $this->Html->script('/common/js/jquery.min');
 
     echo $this->Html->script(array(
-      '/common/js/lodash',
+      '/common/js/jquery-1.10.2.min',
       '/common/js/bootstrap.min',
-      '/common/js/common'
+      // '/common/js/ace-elements.min',
+      // '/common/js/ace'
     ));
 
     echo $this->Js->writeBuffer();
@@ -35,8 +40,7 @@
 
   ?>
 </head>
-<body class="<?php echo $this->layout; ?>-layout">
-  <?php echo $this->element('Common.header'); ?>
+<body class="<?php echo $this->fetch('body-class') ?>">
 
   <?php echo $this->Session->flash(); ?>
 
