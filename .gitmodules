@@ -1,3 +1,0 @@
-[submodule "app/Plugin/Common"]
-	path = app/Plugin/Common
-	url = git@github.com:Bogh/commoncake.git
