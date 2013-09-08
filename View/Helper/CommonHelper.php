@@ -1,7 +1,6 @@
 <?php
 
 App::uses('AppHelper', 'View/Helper');
-App::uses('User', 'Model');
 
 class CommonHelper extends AppHelper {
 
@@ -20,10 +19,13 @@ class CommonHelper extends AppHelper {
         'Upload.Upload'
     );
 
+    public $layoutClass = 'default';
+
     public function afterRender($viewFile) {
         if ($this->request->is('backend')) {
-            $layout = $this->_View->layout;
-            $this->_View->layout = "Common.{$layout}";
+            $this->layoutClass = $this->_View->layout;
+
+            $this->_View->layout = "Common.{$this->layoutClass}";
 
             if (!$this->request->is('ajax')) {
                 // Load extra assets
@@ -214,55 +216,67 @@ class CommonHelper extends AppHelper {
     }
 
     public function userMenu() {
-        $menu = User::$menu;
         $prefix = $this->request->prefix;
-        if (isset($menu[$prefix])) {
-            $menu = $menu[$prefix];
-        }
-        $out = array();
-
-        if (isset($menu['elements'])) {
-            $elements = $menu['elements'];
-            unset($menu['elements']);
+        $menu = Configure::read("Menu.{$prefix}");
+        if (empty($menu)) {
+            return '';
         }
 
-        foreach ($menu as $title => $links) {
-            if (!$links) {
-                continue;
-            }
+        $nav = '';
+        foreach ($menu as $title => $options) {
+            list($item, $active) = $this->_menuLink($title, $options);
+            $open = false;
 
-            $out[] = $this->Html->tag('h3', __($title));
+            // if it's submenu
+            if (isset($options['submenu'])) {
+                $submenu = '';
+                foreach ($options['submenu'] as $t => $o) {
+                    list($sItem, $sActive) = $this->_menuLink($t, $o, true);
 
-            $list = array();
-            foreach ($links as $title => $options) {
-                $linkOptions = array('escape' => false);
-
-                // icon
-                if (isset($options['icon']) && $options['icon']) {
-                    $class = "icon icon-{$options['icon']}";
-                    $title = "<i class=\"{$class}\"></i> " . __($title);
+                    if ($sActive && !$active) {
+                        $active = $open = true;
+                    }
+                    $submenu .= $this->Html->tag('li', $sItem, array(
+                        'class' => $sActive ? 'active' : ''
+                    ));
                 }
-                if (isset($options['options'])) {
-                    $linkOptions = Hash::merge($linkOptions, $options['options']);
-                }
-
-                if ($this->isActive($options['link'])) {
-                    $linkOptions['class'] = 'active';
-                }
-
-                $list[] = $this->link($title, $options['link'], $linkOptions);
+                $item .= $this->Html->tag('ul', $submenu, array('class' => 'submenu'));
             }
-            $out[] = $this->Html->nestedList($list);
+            $class = $active ? 'active' : '';
+            $class .= $open ? ' open' : '';
+            $nav .= $this->Html->tag('li', $item, compact('class'));
         }
 
-        $before = '';
-        if (isset($elements)) {
-            foreach ($elements as $e) {
-                $before .= $this->_View->element($e);
-            }
+        return $this->Html->tag('ul', $nav, array('class' => 'nav nav-list'));
+    }
+
+    protected function _menuLink($title, $options = array(), $submenu = false) {
+        $linkOptions = array('escape' => false);
+
+        $options = Hash::merge(array(
+            'link' => array('action' => 'index')
+        ), $options);
+
+        // icon
+        $_title = '';
+        if (!$submenu && isset($options['icon']) && $options['icon']) {
+            $_title .= "<i class=\"icon icon-{$options['icon']}\"></i> ";
         }
 
-        return $before . implode($out);
+        $_title .= $this->Html->tag('span', __($title), array('class' => 'menu-text'));
+
+        if (isset($options['submenu'])) {
+            $linkOptions['class'] = 'dropdown-toggle';
+            $options['link'] = '#';
+            $_title .= '<b class="arrow icon-angle-down"></b>';
+        }
+
+        if (isset($options['options'])) {
+            $linkOptions = Hash::merge($linkOptions, $options['options']);
+        }
+
+        $active = $this->isActive($options['link']);
+        return array($this->link($_title, $options['link'], $linkOptions), $active);
     }
 
     public function isActive($link) {
@@ -534,6 +548,24 @@ class CommonHelper extends AppHelper {
             $out[] = $c;
             return $out;
         }
+    }
+
+    /**
+     * Create a form element with inputs having div.control-group as class
+     * @param mixed $model see FormHelper::create
+     * @param array $options see FormHelper::create
+     * @return string
+     */
+    public function createForm($model = null, $options = array()) {
+        if (is_array($model) && empty($options)) {
+            $options = $model;
+            $model = null;
+        }
+
+        $options['inputDefaults'] = array(
+            'div' => 'control-group'
+        );
+        return $this->Form->create($model, $options);
     }
 
 }
