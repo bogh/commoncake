@@ -172,7 +172,8 @@ class CommonHelper extends AppHelper {
     public function actions($actions) {
         $out = array();
         $defaults = array(
-            'escape' => false
+            'escape' => false,
+            'class' => 'btn btn-mini'
         );
         foreach ($actions as $title => $options) {
             $linkOptions = array();
@@ -556,16 +557,57 @@ class CommonHelper extends AppHelper {
      * @param array $options see FormHelper::create
      * @return string
      */
-    public function createForm($model = null, $options = array()) {
+    public function createForm($model = null, $options = array(), $inputs = null) {
         if (is_array($model) && empty($options)) {
             $options = $model;
             $model = null;
         }
 
-        $options['inputDefaults'] = array(
-            'div' => 'control-group'
-        );
-        return $this->Form->create($model, $options);
+        $options = Hash::merge(array(
+            'inputDefaults' => array(
+                'div' => 'control-group',
+                'label' => array('class' => 'control-label'),
+                'between' => '<div class="controls">',
+                'after' => '</div>',
+                'class' => 'span6'
+            ),
+            'class' => 'form-horizontal'
+        ), $options);
+
+        $out = $this->Form->create($model, $options);
+        if ($inputs) {
+            $out .= $this->Form->inputs($inputs);
+            $out .= $this->Html->div('space-4', '');
+            $out .= $this->Html->div('form-actions', implode(array(
+                $this->Form->button('<i class="icon-ok bigger-110"></i> Submit', array(
+                    'escape' => false,
+                    'class' => 'btn btn-info'
+                ))
+            )));
+        }
+        return $out;
+    }
+
+    /**
+     * Compose a table structure combining HtmlHelper methods
+     *
+     * @param  array  $headers  Param for HtmlHelper::tableHeaders
+     * @param  array  $cells    Param for HtmlHelper::tableCells
+     * @param  array  $odd      Param for HtmlHelper::tableCells
+     * @param  array  $even     Param for HtmlHelper::tableCells
+     * @param  boolean $count   Param for HtmlHelper::tableCells
+     * @param  array   $table   Table html attributes
+     *
+     * @return string
+     */
+    public function table($headers, $cells, $odd = null, $even = null, $count = false, $table = array()) {
+        $out = $this->Html->tableHeaders($headers);
+        $out .= $this->Html->tableCells($cells, $odd, $even, $count);
+
+        $table = Hash::merge(array(
+            'class' => 'table table-striped table-bordered table-hover'
+        ), $table);
+        return $this->Html->tag('table', $out, $table);
     }
 
 }

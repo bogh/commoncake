@@ -24,10 +24,11 @@
         // echo $this->Html->script('/common/js/jquery.min');
 
         echo $this->Html->script(array(
-            '/common/js/jquery-1.10.2.min',
+            '/common/js/jquery-2.0.3.min',
             '/common/js/bootstrap.min',
-            // '/common/js/ace-elements.min',
-            // '/common/js/ace'
+            '/common/js/ace-elements.min',
+            '/common/js/uncompressed/ace-extra',
+            '/common/js/uncompressed/ace'
         ));
 
         echo $this->Js->writeBuffer();
