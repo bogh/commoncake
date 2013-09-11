@@ -6,7 +6,10 @@ class CommonComponent extends Component {
 
     public $components = array(
         'Session',
-        'Paginator',
+        'Paginator' => array(
+            'limit' => 100,
+            'paramType' => 'querystring'
+        ),
         'Auth',
     );
 
@@ -138,23 +141,23 @@ class CommonComponent extends Component {
         );
         $options = Hash::merge($_defaults, $options);
 
-        $modelClass = $this->_modelClass();
-        $variable = Inflector::variable(Inflector::pluralize($modelClass));
-        if (method_exists($this->$modelClass, 'filter') &&
+        $model = $this->_model();
+        $variable = Inflector::variable(Inflector::pluralize($model->alias));
+        if (method_exists($model, 'filter') &&
                 isset($this->_request->query['filter'])) {
             $options['conditions'] = Hash::merge($options['conditions'],
-                $this->$modelClass->filter($this->_request->query));
+                $model->filter($this->_request->query));
         }
-        $this->Paginator->settings[$modelClass] = $options;
+        $this->Paginator->settings[$model->alias] = $options;
 
-        $this->set($variable, $this->Paginator->paginate($modelClass));
+        $this->_controller->set($variable, $this->Paginator->paginate($model->alias));
     }
 
     /**
      * Handle bulk operations
      */
     protected function _bulk() {
-        $modelClass = $this->_modelClass();
+        $model = $this->_model();
         $data = $this->_request->data;
 
         if (!$this->_request->is('post') || !isset($data[$modelClass])) {
@@ -167,7 +170,7 @@ class CommonComponent extends Component {
         $action = strtolower($data['action']);
         $data = $data[$modelClass];
 
-        if (!isset($data['id']) || !method_exists($this->$modelClass, 'actions')) {
+        if (!isset($data['id']) || !method_exists($model, 'actions')) {
             return;
         }
 
@@ -176,7 +179,7 @@ class CommonComponent extends Component {
             return;
         }
 
-        $result = $this->$modelClass->actions($action, $ids);
+        $result = $model->actions($action, $ids);
         if ($result === false) {
             $this->error('There has been an error applying the action. Please try again!');
         } elseif (is_string($result)) {
@@ -184,9 +187,6 @@ class CommonComponent extends Component {
         }
     }
 
-    protected function _modelClass() {
-        return $this->_controller->modelClass;
-    }
 
     /**
      * Edit model
@@ -198,14 +198,15 @@ class CommonComponent extends Component {
         );
 
         $options = Hash::merge($_defaults, $options);
-        $modelClass = $this->_modelClass();
+        $model = $this->_model();
+
         $method = $options['method'];
         if (!empty($this->_request->data)) {
-            if ($data = $this->$modelClass->$method($this->_request->data)) {
-                $this->success("{$modelClass} has been saved!");
+            if ($data = $model->$method($this->_request->data)) {
+                $this->success("{$model->alias} has been saved!");
 
                 if (isset($options['callback']) && is_callable($options['callback'])) {
-                    $options['callback']($data, $this->$modelClass);
+                    $options['callback']($data, $model);
                 }
 
                 if (is_array($options['redirect'])) {
@@ -217,8 +218,13 @@ class CommonComponent extends Component {
                 $this->error();
             }
         } elseif (!empty($id)) {
-            $this->_request->data = $this->$modelClass->findById($id);
+            $this->_request->data = $model->findById($id);
         }
+    }
+
+    protected function _model() {
+        $modelClass = $this->_controller->modelClass;
+        return $this->_controller->$modelClass;
     }
 
     public function delete($id, $options = array()) {
@@ -227,11 +233,11 @@ class CommonComponent extends Component {
         );
 
         $options = Hash::merge($_defaults, $options);
-        $modelClass = $this->_modelClass();
-        if ($this->$modelClass->delete($id)) {
-            $this->_info("{$modelClass} has been deleted!");
+        $model = $this->_model();
+        if ($model->delete($id)) {
+            $this->_info("{$model->alias} has been deleted!");
         } else {
-            $this->error("There has been an error trying to delete the {$modelClass}!");
+            $this->error("There has been an error trying to delete the {$model->alias}!");
         }
         $this->_controller->redirect($options['redirect']);
     }
@@ -241,10 +247,10 @@ class CommonComponent extends Component {
             // 'recursive' => 1
         ), $options);
 
-        $modelClass = $this->_modelClass();
+        $model = $this->_model();
         $variable = Inflector::variable($modelClass);
 
-        $this->set($variable, $this->$modelClass->findById($id));
+        $this->set($variable, $model->findById($id));
 
     }
 
