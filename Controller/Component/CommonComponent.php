@@ -87,6 +87,11 @@ class CommonComponent extends Component {
     protected function _auth() {
         // Allowed actions
         if (property_exists($this->_controller, 'allowedActions')) {
+            $actions = $this->_controller->allowedActions;
+            if ($actions === true || $actions == '*') {
+                $this->Auth->allow();
+                return;
+            }
             $this->Auth->allow($this->_controller->allowedActions);
         }
     }
