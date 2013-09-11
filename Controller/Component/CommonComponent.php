@@ -21,11 +21,11 @@ class CommonComponent extends Component {
         $this->_settings();
         $this->_detectors();
         $this->_prefix();
+        $this->_auth();
     }
 
     public function startup(Controller $controller) {
         $this->_layout();
-        $this->_auth();
     }
 
     /**
@@ -84,6 +84,7 @@ class CommonComponent extends Component {
     protected function _auth() {
         // Allowed actions
         if (property_exists($this->_controller, 'allowedActions')) {
+            debug($this->_controller->allowedActions);
             $this->Auth->allow($this->_controller->allowedActions);
         }
     }
