@@ -11,11 +11,13 @@ class CommonComponent extends Component {
             'paramType' => 'querystring'
         ),
         'Auth',
+        'Less'
     );
 
     protected $_controller = null;
 
     protected $_request = null;
+
 
     public function initialize(Controller $controller) {
         $this->_controller = $controller;
@@ -29,6 +31,10 @@ class CommonComponent extends Component {
 
     public function startup(Controller $controller) {
         $this->_layout();
+    }
+
+    public function beforeRender(Controller $controller) {
+        $this->_less();
     }
 
     /**
@@ -259,5 +265,25 @@ class CommonComponent extends Component {
 
     }
 
+    /**
+     * Example usage: add this to Config/bootstrap.php
+     * Configure::write('LessFiles', array());
+     * (an array of filenames, without extension,
+     * located in webroot/css/<filename>.less)
+     */
+    protected function _less() {
+        if (Configure::read('debug') && Configure::read('LessFiles')) {
+
+            App::import('Vendor', 'Common.lessc');
+            $l = new lessc;
+
+            $files = Configure::read('LessFiles');
+            foreach ($files as $f) {
+                $less = APP . 'webroot' . DS . 'css' . DS . "{$f}.less";
+                $css = APP . 'webroot' . DS . 'css' . DS . "{$f}.css";
+                $l->compileFile($less, $css);
+            }
+        }
+    }
 
 }
