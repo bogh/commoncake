@@ -569,7 +569,11 @@ class CommonHelper extends AppHelper {
                 'label' => array('class' => 'control-label'),
                 'between' => '<div class="controls">',
                 'after' => '</div>',
-                'class' => 'span6'
+                'class' => 'span6',
+                'error' => array(
+                    'attributes' => array('class' => 'help-inline', 'wrap' => 'span')
+                ),
+                'format' => array('before', 'label', 'between', 'input', 'error', 'after')
             ),
             'class' => 'form-horizontal'
         ), $options);

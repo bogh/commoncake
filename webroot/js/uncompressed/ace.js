@@ -8,7 +8,7 @@ jQuery(function($) {
 	//ace.click_event defined in ace-elements.js
 	ace.handle_side_menu(jQuery);
 
-	ace.enable_search_ahead(jQuery);	
+	ace.enable_search_ahead(jQuery);
 
 	ace.general_things(jQuery);//and settings
 
@@ -48,9 +48,9 @@ ace.handle_side_menu = function($) {
 		//if so, it means we should toggle a submenu
 		var link_element = $(e.target).closest('a');
 		if(!link_element || link_element.length == 0) return;//if not clicked inside a link element
-		
+
 		$minimized = $('#sidebar').hasClass('menu-min');
-		
+
 		if(! link_element.hasClass('dropdown-toggle') ) {//it doesn't have a submenu return
 			//just one thing before we return
 			//if sidebar is collapsed(minimized) and we click on a first level menu item
@@ -74,12 +74,12 @@ ace.handle_side_menu = function($) {
 		if(! $(sub).is(':visible') ) {//if not open and visible, let's open it and make it visible
 		  var parent_ul = $(sub.parentNode).closest('ul');
 		  if($minimized && parent_ul.hasClass('nav-list')) return;
-		  
+
 		  parent_ul.find('> .open > .submenu').each(function(){
 			//close all other open submenus except for the active one
 			if(this != sub && !$(this.parentNode).hasClass('active')) {
 				$(this).slideUp(200).parent().removeClass('open');
-				
+
 				//uncomment the following line to close all submenus on deeper levels when closing a submenu
 				//$(this).find('.open > .submenu').slideUp(0).parent().removeClass('open');
 			}
@@ -105,7 +105,7 @@ ace.general_things = function($) {
 	icon.removeClass($match[0]);
 	$(this).off('click');
  });
- 
+
  $('.nav-list .badge[title],.nav-list .label[title]').tooltip({'placement':'right'});
 
 
@@ -117,18 +117,24 @@ ace.general_things = function($) {
 	$('#ace-settings-box').toggleClass('open');
  });
 
- 
- $('#ace-settings-navbar').on('click', function(){
-	ace.settings.navbar_fixed(this.checked);//@ ace-extra.js
- }).get(0).checked = ace.settings.is('navbar', 'fixed')
 
- $('#ace-settings-sidebar').on('click', function(){
-	ace.settings.sidebar_fixed(this.checked);//@ ace-extra.js
- }).get(0).checked = ace.settings.is('sidebar', 'fixed')
- 
- $('#ace-settings-breadcrumbs').on('click', function(){
-	ace.settings.breadcrumbs_fixed(this.checked);//@ ace-extra.js
- }).get(0).checked = ace.settings.is('breadcrumbs', 'fixed')
+if ($('#ace-settings-navbar').length > 0) {
+	$('#ace-settings-navbar').on('click', function(){
+		ace.settings.navbar_fixed(this.checked);//@ ace-extra.js
+	}).get(0).checked = ace.settings.is('navbar', 'fixed')
+}
+
+if ($('#ace-settings-sidebar').length > 0) {
+	$('#ace-settings-sidebar').on('click', function(){
+		ace.settings.sidebar_fixed(this.checked);//@ ace-extra.js
+	}).get(0).checked = ace.settings.is('sidebar', 'fixed')
+}
+
+if ($('#ace-settings-breadcrumbs').length > 0) {
+	$('#ace-settings-breadcrumbs').on('click', function(){
+		ace.settings.breadcrumbs_fixed(this.checked);//@ ace-extra.js
+	}).get(0).checked = ace.settings.is('breadcrumbs', 'fixed')
+}
 
 
  //Switching to RTL (right to left) Mode
@@ -142,7 +148,7 @@ ace.general_things = function($) {
 	$('html,body').animate({scrollTop: 0}, duration);
 	return false;
  });
- 
+
   try {
 	$('#skin-colorpicker').ace_colorpicker();
   } catch(e) {}
@@ -178,7 +184,7 @@ ace.general_things = function($) {
 		$('.ace-nav > li.grey').removeClass('red').find('.badge').removeClass('badge-yellow');
 	}
  });
- 
+
 }
 
 
@@ -199,7 +205,7 @@ ace.widget_boxes = function($) {
 			var $match = $icon.attr('class').match(/icon\-(.*)\-(up|down)/);
 			var $icon_down = 'icon-'+$match[1]+'-down';
 			var $icon_up = 'icon-'+$match[1]+'-up';
-			
+
 			var $body_inner = $body.find('.widget-body-inner')
 			if($body_inner.length == 0) {
 				$body = $body.wrapInner('<div class="widget-body-inner"></div>').find(':first-child').eq(0);
@@ -271,13 +277,13 @@ ace.switch_direction = function($) {
 	.end()
 	.find('.tmp-rtl-pull-right').removeClass('tmp-rtl-pull-right').addClass('pull-left')
 	.end()
-	
+
 	.find('.chosen-container').toggleClass('chosen-rtl')
 	.end()
 
 	.find('.control-group .controls > [class*="span"]:first-child').toggleClass('pull-right')
 	.end()
-	
+
 	function swap_classes(class1, class2) {
 		$body
 		 .find('.'+class1).removeClass(class1).addClass('tmp-rtl-'+class1)
