@@ -246,7 +246,7 @@ class CommonComponent extends Component {
         $options = Hash::merge($_defaults, $options);
         $model = $this->_model();
         if ($model->delete($id)) {
-            $this->_info("{$model->alias} has been deleted!");
+            $this->info("{$model->alias} has been deleted!");
         } else {
             $this->error("There has been an error trying to delete the {$model->alias}!");
         }
@@ -284,6 +284,24 @@ class CommonComponent extends Component {
                 $l->compileFile($less, $css);
             }
         }
+    }
+
+    /**
+     * Use this in settings editing controller
+     */
+    public function settingsEdit() {
+        $CommonSetting = ClassRegistry::init('CommonSetting');
+        if (!empty($this->_request->data)) {
+            if ($CommonSetting->saveSettings($this->_request->data[$CommonSetting->alias])) {
+                $this->success('Settings saved!');
+                $this->_controller->redirect(array('action' => $this->_request->action));
+            } else {
+                $this->error();
+            }
+        } else {
+            $this->_request->data[$CommonSetting->alias] = Configure::read('Setting');
+        }
+
     }
 
 }

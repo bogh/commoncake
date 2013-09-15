@@ -11,12 +11,12 @@
 
         echo $this->Html->css(array(
             '/common/css/bootstrap.min',
-            // '/common/css/bootstrap-responsive.min',
+            '/common/css/bootstrap-responsive.min',
             '/common/css/font-awesome.min',
             '/common/css/ace-fonts',
             '/common/css/ace.min',
-            // '/common/css/ace-responsive.min',
-            // '/common/css/ace-skins.min'
+            '/common/css/ace-responsive.min',
+            '/common/css/ace-skins.min'
         ));
 
         echo $this->fetch('css');

@@ -20,10 +20,9 @@
 
                     <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
                         <li>
-                            <a href="#">
-                                <i class="icon-cog"></i>
-                                Settings <!-- TODO -->
-                            </a>
+                            <?php echo $this->Html->link('<i class="icon-cog"></i> Settings', array(
+                                'controller' => 'settings', 'action' => 'index'
+                            ), array('escape' => false)); ?>
                         </li>
                         <li>
                             <a href="#">
