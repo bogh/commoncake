@@ -16,7 +16,8 @@
             '/common/css/ace-fonts',
             '/common/css/ace.min',
             '/common/css/ace-responsive.min',
-            '/common/css/ace-skins.min'
+            '/common/css/ace-skins.min',
+            '/common/css/style'
         ));
 
         echo $this->fetch('css');

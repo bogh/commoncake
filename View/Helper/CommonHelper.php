@@ -557,7 +557,7 @@ class CommonHelper extends AppHelper {
      * @param array $options see FormHelper::create
      * @return string
      */
-    public function createForm($model = null, $options = array(), $inputs = null) {
+    public function createForm($model = null, $options = array(), $inputs = null, $after = '') {
         if (is_array($model) && empty($options)) {
             $options = $model;
             $model = null;
@@ -581,15 +581,20 @@ class CommonHelper extends AppHelper {
         $out = $this->Form->create($model, $options);
         if ($inputs) {
             $out .= $this->Form->inputs($inputs);
-            $out .= $this->Html->div('space-4', '');
-            $out .= $this->Html->div('form-actions', implode(array(
+            $out .= $after;
+            $out .= $this->endForm();
+        }
+        return $out;
+    }
+
+    public function endForm() {
+        return $this->Html->div('space-4', '') .
+            $this->Html->div('form-actions', implode(array(
                 $this->Form->button('<i class="icon-ok bigger-110"></i> Submit', array(
                     'escape' => false,
                     'class' => 'btn btn-info'
                 ))
             )));
-        }
-        return $out;
     }
 
     /**
@@ -612,6 +617,14 @@ class CommonHelper extends AppHelper {
             'class' => 'table table-striped table-bordered table-hover'
         ), $table);
         return $this->Html->tag('table', $out, $table);
+    }
+
+    public function widgetBox($header, $content, $span = 6) {
+        return $this->Html->div("span{$span} widget-container-span",
+            $this->Html->div('widget-box', implode(array(
+                $this->Html->div('widget-header', $header),
+                $this->Html->div('widget-body', $this->Html->div('widget-main ', $content))
+            ))));
     }
 
 }
