@@ -619,12 +619,4 @@ class CommonHelper extends AppHelper {
         return $this->Html->tag('table', $out, $table);
     }
 
-    public function widgetBox($header, $content, $span = 6) {
-        return $this->Html->div("span{$span} widget-container-span",
-            $this->Html->div('widget-box', implode(array(
-                $this->Html->div('widget-header', $header),
-                $this->Html->div('widget-body', $this->Html->div('widget-main ', $content))
-            ))));
-    }
-
 }
