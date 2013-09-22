@@ -22,8 +22,6 @@
 
         echo $this->fetch('css');
 
-        // echo $this->Html->script('/common/js/jquery.min');
-
         echo $this->Html->script(array(
             '/common/js/jquery-2.0.3.min',
             '/common/js/bootstrap.min',
